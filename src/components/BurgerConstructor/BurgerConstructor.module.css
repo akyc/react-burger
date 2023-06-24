@@ -1,0 +1,23 @@
+.constructorContainer{
+    width: 100%;
+    max-width: 600px
+}
+.blockedElement{
+    flex-direction: column; 
+    gap: 10px;
+}
+.fillings{
+    flex-direction: column; 
+    gap: 10px; 
+    max-height: 440px; 
+    overflow-y: auto;
+}
+.draggableElement{ 
+    align-items: center;
+    gap: 0 8px;
+}
+.total{
+    align-items: center; 
+    justify-content: flex-end; 
+    gap: 0 40px;
+}
