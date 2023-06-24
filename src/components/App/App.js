@@ -5,13 +5,14 @@ import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
 import getData from '../../utils/data'
 import styles from './App.module.css'
 
+const ingredientGroups = [
+  { name: 'bun', title: 'Булки' },
+  { name: 'sauce', title: 'Соусы' },
+  { name: 'main', title: 'Начинки' }
+]
+const ingredients = getData()
+
 const App = () => {
-  const ingredientGroups = [
-    { name: 'bun', title: 'Булки' },
-    { name: 'sauce', title: 'Соусы' },
-    { name: 'main', title: 'Начинки' }
-  ]
-  const ingredients = getData()
   return (
     <div className='App'>
       <AppHeader />

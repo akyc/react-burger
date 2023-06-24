@@ -23,7 +23,7 @@ const BurgerIngredients = ({ ingredients, ingredientGroups }) => {
             </div>
             <div className={styles.ingredientsListContainer}>
                 {ingredientGroups.map(({ name, title }, i) => {
-                    let actualIngredients = ingredients.filter(({ type }) => type === name)
+                    const actualIngredients = ingredients.filter(({ type }) => type === name)
                     return (
                         <IngredientsList ingredients={actualIngredients} groupTitle={title} key={i} />
                     )
