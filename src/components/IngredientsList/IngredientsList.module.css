@@ -1,0 +1,16 @@
+.group{
+    gap: 32px 24px;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.item{
+    position: relative; 
+    width: 272px; 
+    flex: 0 0 auto;
+}
+.cost{
+    display: flex;
+    gap: 8;
+    align-items: center;
+    justify-content: center; 
+}

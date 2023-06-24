@@ -1,17 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import styles from './BurgerConstructor.module.css'
 
 const BurgerConstructor = ({ selectedIngredients }) => {
     return (
-        <section style={{ width: "100%", maxWidth: 600 }} className='mt-25 pl-4'>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className="pb-3 pl-8">
+        <section className={`${styles.constructorContainer} mt-25 pl-4`}>
+            <div className={`${styles.blockedElement} d-flex pb-3 pl-8`}>
                 {selectedIngredients.slice(0, 1).map(({ _id, name, price, image }) => {
                     return (
                         <ConstructorElement
-                            type={"top"}
+                            type={'top'}
                             isLocked={true}
-                            text={name + ' (верх)'}
+                            text={`${name} (верх)`}
                             price={price}
                             thumbnail={image}
                             key={_id}
@@ -19,13 +20,12 @@ const BurgerConstructor = ({ selectedIngredients }) => {
                     )
                 })}
             </div>
-            <div className="" style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: 440, overflowY: "auto" }}>
+            <div className={`${styles.fillings} d-flex`}>
                 {selectedIngredients.map(({ _id, name, price, image }) => {
                     return (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: "0 8px" }} key={_id}>
-                            <DragIcon type="primary" />
+                        <div className={`${styles.dragableElement} d-flex`} key={_id}>
+                            <DragIcon type='primary' />
                             <ConstructorElement
-                                type={''}
                                 isLocked={false}
                                 text={name}
                                 price={price}
@@ -35,13 +35,13 @@ const BurgerConstructor = ({ selectedIngredients }) => {
                     )
                 })}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className='pt-3 pl-8'>
+            <div className={`${styles.blockedElement} d-flex pt-3 pl-8`}>
                 {selectedIngredients.slice(0, 1).map(({ _id, name, price, image }) => {
                     return (
                         <ConstructorElement
-                            type={"bottom"}
+                            type={'bottom'}
                             isLocked={true}
-                            text={name + ' (низ)'}
+                            text={`${name} (низ)`}
                             price={price}
                             thumbnail={image}
                             key={_id}
@@ -49,15 +49,14 @@ const BurgerConstructor = ({ selectedIngredients }) => {
                     )
                 })}
             </div>
-            <div className='mt-10 pr-4' style={{ display: "flex", alignItems: 'center', justifyContent: 'flex-end', gap: '0 40px' }}>
-                <div className='' style={{ display: 'flex' }}>
-                    <p className="text text_type_digits-default pr-2">610</p> <CurrencyIcon type="primary" />
+            <div className={`${styles.total} d-flex mt-10 pr-4`}>
+                <div className='d-flex'>
+                    <p className='text text_type_digits-default pr-2'>610</p> <CurrencyIcon type='primary' />
                 </div>
-                <Button htmlType="button" type="primary" size="medium">
+                <Button htmlType='button' type='primary' size='medium'>
                     Оформить заказ
                 </Button>
             </div>
-
         </section>
     )
 }
@@ -69,6 +68,6 @@ BurgerConstructor.propTypes = {
         price: PropTypes.number,
         image: PropTypes.string,
     })).isRequired
-};
+}
 
 export default BurgerConstructor

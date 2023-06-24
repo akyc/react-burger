@@ -1,20 +1,18 @@
-import React from "react";
+import React from 'react'
 import PropTypes from 'prop-types'
-
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientsList from "../IngredientsList/IngredientsList";
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
+import IngredientsList from '../IngredientsList/IngredientsList'
+import styles from './BurgerIngredients.module.css'
 
 const BurgerIngredients = ({ ingredients, ingredientGroups }) => {
     const [current, setCurrent] = React.useState(ingredientGroups[0].name)
 
     return (
-        <section style={{ width: "100%", maxWidth: 600 }}>
-            <div style={{ width: "100%" }} className="">
-                <p className="text text_type_main-large pt-10 pb-5">
-                    Соберите бургер
-                </p>
-            </div>
-            <div style={{ display: 'flex' }} className="pb-10">
+        <section className={styles.ingredientsContainer}>
+            <p className='text text_type_main-large pt-10 pb-5'>
+                Соберите бургер
+            </p>
+            <div className={`${styles.tabsContainer} pb-10`}>
                 {ingredientGroups.map(({ name, title }, i) => {
                     return (
                         <Tab value={name} active={current === name} onClick={setCurrent} key={i}>
@@ -23,7 +21,7 @@ const BurgerIngredients = ({ ingredients, ingredientGroups }) => {
                     )
                 })}
             </div>
-            <div style={{ maxHeight: 912, overflowY: "auto" }}>
+            <div className={styles.ingredientsListContainer}>
                 {ingredientGroups.map(({ name, title }, i) => {
                     let actualIngredients = ingredients.filter(({ type }) => type === name)
                     return (
@@ -45,5 +43,5 @@ BurgerIngredients.propTypes = {
         name: PropTypes.string,
         title: PropTypes.string,
     })).isRequired
-};
+}
 export default BurgerIngredients

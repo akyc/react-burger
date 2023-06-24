@@ -1,9 +1,19 @@
-*, *::before, *::after {
-    margin: 0;
+*{
     padding: 0;
-    box-sizing: border-box;
+    margin: 0;
 }
-
-header {
-  background: #1C1C21;
+*::-webkit-scrollbar {
+  width: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #8585AD;
+}
+*::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+.d-flex{
+  display: flex;
+}
+.text-center{
+  text-align: center;
 }

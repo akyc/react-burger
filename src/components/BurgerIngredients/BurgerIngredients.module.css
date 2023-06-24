@@ -1,0 +1,11 @@
+.ingredientsContainer{
+    width: 50%; 
+    max-width: 600px    
+}
+.tabsContainer{
+    display: flex;
+}
+.ingredientsListContainer{
+    max-height: 912px; 
+    overflow-y: auto;
+}
