@@ -12,7 +12,7 @@
     max-height: 440px; 
     overflow-y: auto;
 }
-.dragableElement{ 
+.draggableElement{ 
     align-items: center;
     gap: 0 8px;
 }

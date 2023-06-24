@@ -23,7 +23,7 @@ const BurgerConstructor = ({ selectedIngredients }) => {
             <div className={`${styles.fillings} d-flex`}>
                 {selectedIngredients.map(({ _id, name, price, image }) => {
                     return (
-                        <div className={`${styles.dragableElement} d-flex`} key={_id}>
+                        <div className={`${styles.draggableElement} d-flex`} key={_id}>
                             <DragIcon type='primary' />
                             <ConstructorElement
                                 isLocked={false}
