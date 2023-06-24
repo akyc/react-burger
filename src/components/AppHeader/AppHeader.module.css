@@ -1,0 +1,30 @@
+.container{
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1280px;
+    display: flex;
+    align-items: center;
+}
+
+.button{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ordersActions{
+    width: 38%;
+    display: flex;
+}
+
+.profile{
+    width: 38%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logotype{
+    display: flex;
+    width: 24%;
+    justify-content: center;
+}
