@@ -1,16 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './IngredientsList.module.css'
+import Modal from '../Modal/Modal'
+import IngredientDetails from '../IngredientDetails/IngredientDetails'
 
 const IngredientsList = ({ ingredients, groupTitle }) => {
+    const [state, setState] = useState({
+        showModal: false,
+        showInfoIngredient: null
+    })
+    const modalOpenHandler = (e, ingredient) => {
+        setState({ ...state, showModal: true, showInfoIngredient: ingredient })
+    }
+    const modalCloseHandler = (e) => {
+        setState({ ...state, showModal: false, showInfoIngredient: null })
+    }
     return (
         <div>
             <p className='text text_type_main-medium'>{groupTitle}</p>
             <div className={`${styles.group} d-flex pt-6 pb-10 pl-4`}>
-                {ingredients.map(({ _id, name, price, image_mobile, image_large, image }) => {
+                {ingredients.map((ingredient) => {
+                    const { _id, name, price, image_mobile, image_large, image } = ingredient
                     return (
-                        <div key={_id} className={styles.item}>
+                        <div key={_id} className={`${styles.item} clickable`} onClick={(e) => modalOpenHandler(e, ingredient)}>
                             <picture className='pl-4 pr-4 pb-4'>
                                 <source media='(min-width: 1024px)' src={image_large} />
                                 <source media='(max-width: 768px)' src={image_mobile} />
@@ -22,10 +35,14 @@ const IngredientsList = ({ ingredients, groupTitle }) => {
                             <p className='text text_type_main-default text-center'>
                                 {name}
                             </p>
-                            {_id === 0 && <Counter count={1} size='default' extraClass='m-1' />}
                         </div>
                     )
                 })}
+                {state.showModal && state.showInfoIngredient &&
+                    <Modal header='Детали ингредиента' onClose={modalCloseHandler}>
+                        <IngredientDetails ingredient={state.showInfoIngredient} />
+                    </Modal>
+                }
             </div>
         </div>
     )
