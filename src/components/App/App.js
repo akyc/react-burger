@@ -3,6 +3,7 @@ import AppHeader from '../AppHeader/AppHeader'
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
 import Modal from '../Modal/Modal'
+import API from '../../utils/api'
 import styles from './App.module.css'
 
 const App = () => {
@@ -14,17 +15,13 @@ const App = () => {
     ingredients: [],
     isLoading: false,
     hasError: false,
-    error: null,
-    apiUrl: 'https://norma.nomoreparties.space/api/ingredients'
+    error: null
   })
-  const { ingredientGroups, ingredients, isLoading, hasError, error, apiUrl } = state;
+  const { ingredientGroups, ingredients, isLoading, hasError, error } = state;
 
   useEffect(() => {
     setState({ ...state, hasError: false, isLoading: true })
-    fetch(apiUrl)
-      .then(res => res.ok ? res.json() : Promise.reject(res))
-      .then(({ data }) => setState({ ...state, ingredients: data, isLoading: false }))
-      .catch(err => setState({ ...state, hasError: true, isLoading: false, error: err.status }))
+    API.getIngredients(state, setState)
   }, [])
 
   return (
@@ -38,7 +35,6 @@ const App = () => {
       }
       {!isLoading &&
         !hasError &&
-        ingredients.length &&
         <>
           <AppHeader />
           <main className={styles.main}>

@@ -11,10 +11,10 @@ const IngredientsList = ({ ingredients, groupTitle }) => {
         showInfoIngredient: null
     })
     const modalOpenHandler = (e, ingredient) => {
-        setState({ ...state, showModal: true, showInfoIngredient: ingredient })
+        setState({ showModal: true, showInfoIngredient: ingredient })
     }
     const modalCloseHandler = (e) => {
-        setState({ ...state, showModal: false, showInfoIngredient: null })
+        setState({ showModal: false, showInfoIngredient: null })
     }
     return (
         <div>
