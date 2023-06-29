@@ -1,0 +1,22 @@
+.modal{
+    max-width: 720px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    z-index: 1056;
+}
+.modalContent{
+    position: relative;
+    border-radius: 40px;
+    background: #1C1C21;
+    width: 100%;
+}
+.modalHeader{
+    min-width: 640px;
+    align-items: center;
+    justify-content: space-between;
+}

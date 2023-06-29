@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import IngredientsList from '../IngredientsList/IngredientsList'
 import styles from './BurgerIngredients.module.css'
-
+import { ingredientType } from '../../utils/props-types'
 const BurgerIngredients = ({ ingredients, ingredientGroups }) => {
     const [current, setCurrent] = React.useState(ingredientGroups[0].name)
 
@@ -33,12 +33,7 @@ const BurgerIngredients = ({ ingredients, ingredientGroups }) => {
     )
 }
 BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        price: PropTypes.number,
-        image: PropTypes.string,
-    })).isRequired,
+    ingredients: PropTypes.arrayOf(ingredientType).isRequired,
     ingredientGroups: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string,
         title: PropTypes.string,

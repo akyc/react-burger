@@ -1,25 +1,50 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AppHeader from '../AppHeader/AppHeader'
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
-import getData from '../../utils/data'
+import Modal from '../Modal/Modal'
+import API from '../../utils/api'
 import styles from './App.module.css'
 
-const ingredientGroups = [
-  { name: 'bun', title: 'Булки' },
-  { name: 'sauce', title: 'Соусы' },
-  { name: 'main', title: 'Начинки' }
-]
-const ingredients = getData()
-
 const App = () => {
+  const ingredientGroups = [
+    { name: 'bun', title: 'Булки' },
+    { name: 'sauce', title: 'Соусы' },
+    { name: 'main', title: 'Начинки' }
+  ]
+  const [ingredients, setIngredients] = useState([])
+  const [isLoading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    setLoading(true)
+    API.getIngredients()
+      .then(({ data }) => setIngredients(data))
+      .catch((err) => setError(err.status))
+      .finally(() => setLoading(false))
+  }, [])
+  
   return (
     <div className='App'>
-      <AppHeader />
-      <main className={styles.main}>
-        <BurgerIngredients ingredients={ingredients} ingredientGroups={ingredientGroups} />
-        <BurgerConstructor selectedIngredients={ingredients} />
-      </main>
+      {isLoading && 'Загрузка...'}
+      {
+        error &&
+        <Modal header='Ошибка'>
+          <p className='text text_type_main-medium pt-20 pb-4'>Код ошибки: {error}</p>
+          <p className='text text_type_main-default pt-20 pb-10'>Попробуйте перезагрузить страницу или вернуться позже</p>
+        </Modal>
+      }
+      {
+        !isLoading &&
+        !error &&
+        <>
+          <AppHeader />
+          <main className={styles.main}>
+            <BurgerIngredients ingredients={ingredients} ingredientGroups={ingredientGroups} />
+            <BurgerConstructor selectedIngredients={ingredients} />
+          </main>
+        </>
+      }
     </div>
   )
 }
