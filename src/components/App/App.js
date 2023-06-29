@@ -7,24 +7,23 @@ import API from '../../utils/api'
 import styles from './App.module.css'
 
 const App = () => {
-  const [state, setState] = useState({
-    ingredientGroups: [
-      { name: 'bun', title: 'Булки' },
-      { name: 'sauce', title: 'Соусы' },
-      { name: 'main', title: 'Начинки' }],
-    ingredients: [],
-  })
+  const ingredientGroups = [
+    { name: 'bun', title: 'Булки' },
+    { name: 'sauce', title: 'Соусы' },
+    { name: 'main', title: 'Начинки' }
+  ]
+  const [ingredients, setIngredients] = useState([])
   const [isLoading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
   useEffect(() => {
     setLoading(true)
     API.getIngredients()
-      .then(({ data }) => setState({ ...state, ingredients: data }))
+      .then(({ data }) => setIngredients(data))
       .catch((err) => setError(err.status))
       .finally(() => setLoading(false))
   }, [])
-
-  const { ingredientGroups, ingredients } = state;
+  
   return (
     <div className='App'>
       {isLoading && 'Загрузка...'}

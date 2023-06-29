@@ -4,7 +4,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './IngredientsList.module.css'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
-import { ingredientsTypes } from '../../utils/props-types'
+import { ingredientType } from '../../utils/props-types'
 
 
 const IngredientsList = ({ ingredients, groupTitle }) => {
@@ -51,7 +51,7 @@ const IngredientsList = ({ ingredients, groupTitle }) => {
 }
 
 IngredientsList.propTypes = {
-    ingredients: ingredientsTypes.isRequired,
+    ingredients: PropTypes.arrayOf(ingredientType).isRequired,
     groupTitle: PropTypes.string.isRequired
 }
 
