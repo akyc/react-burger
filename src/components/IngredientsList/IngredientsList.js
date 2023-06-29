@@ -4,6 +4,8 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './IngredientsList.module.css'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import { ingredientsTypes } from '../../utils/props-types'
+
 
 const IngredientsList = ({ ingredients, groupTitle }) => {
     const [state, setState] = useState({
@@ -49,14 +51,7 @@ const IngredientsList = ({ ingredients, groupTitle }) => {
 }
 
 IngredientsList.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        price: PropTypes.number,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        image: PropTypes.string
-    })).isRequired,
+    ingredients: ingredientsTypes.isRequired,
     groupTitle: PropTypes.string.isRequired
 }
 

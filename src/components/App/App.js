@@ -13,28 +13,31 @@ const App = () => {
       { name: 'sauce', title: 'Соусы' },
       { name: 'main', title: 'Начинки' }],
     ingredients: [],
-    isLoading: false,
-    hasError: false,
-    error: null
   })
-  const { ingredientGroups, ingredients, isLoading, hasError, error } = state;
-
+  const [isLoading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   useEffect(() => {
-    setState({ ...state, hasError: false, isLoading: true })
-    API.getIngredients(state, setState)
+    setLoading(true)
+    API.getIngredients()
+      .then(({ data }) => setState({ ...state, ingredients: data }))
+      .catch((err) => setError(err.status))
+      .finally(() => setLoading(false))
   }, [])
 
+  const { ingredientGroups, ingredients } = state;
   return (
     <div className='App'>
       {isLoading && 'Загрузка...'}
-      {hasError &&
+      {
+        error &&
         <Modal header='Ошибка'>
-          {error && <p className='text text_type_main-medium pt-20 pb-4'>Код ошибки: {error}</p>}
+          <p className='text text_type_main-medium pt-20 pb-4'>Код ошибки: {error}</p>
           <p className='text text_type_main-default pt-20 pb-10'>Попробуйте перезагрузить страницу или вернуться позже</p>
         </Modal>
       }
-      {!isLoading &&
-        !hasError &&
+      {
+        !isLoading &&
+        !error &&
         <>
           <AppHeader />
           <main className={styles.main}>
