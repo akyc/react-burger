@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import {useDispatch, useSelector} from "react-redux"
+import {getIngredients} from "../../services/actions/ingredients";
 import AppHeader from '../AppHeader/AppHeader'
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
@@ -7,41 +9,36 @@ import API from '../../utils/api'
 import styles from './App.module.css'
 
 const App = () => {
+  const dispatch = useDispatch()
+  const {ingredientsItems, ingredientsRequest, ingredientsFailed, ingredientsRequestError} = useSelector(store => store.ingredients)
   const ingredientGroups = [
     { name: 'bun', title: 'Булки' },
     { name: 'sauce', title: 'Соусы' },
     { name: 'main', title: 'Начинки' }
   ]
-  const [ingredients, setIngredients] = useState([])
-  const [isLoading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
 
   useEffect(() => {
-    setLoading(true)
-    API.getIngredients()
-      .then(({ data }) => setIngredients(data))
-      .catch((err) => setError(err.status))
-      .finally(() => setLoading(false))
+    dispatch(getIngredients())
   }, [])
   
   return (
     <div className='App'>
-      {isLoading && 'Загрузка...'}
+      {ingredientsRequest && 'Загрузка...'}
       {
-        error &&
+        ingredientsFailed &&
         <Modal header='Ошибка'>
-          <p className='text text_type_main-medium pt-20 pb-4'>Код ошибки: {error}</p>
+          <p className='text text_type_main-medium pt-20 pb-4'>Код ошибки: {ingredientsRequestError}</p>
           <p className='text text_type_main-default pt-20 pb-10'>Попробуйте перезагрузить страницу или вернуться позже</p>
         </Modal>
       }
       {
-        !isLoading &&
-        !error &&
+        !ingredientsRequest &&
+        !ingredientsFailed &&
         <>
           <AppHeader />
           <main className={styles.main}>
-            <BurgerIngredients ingredients={ingredients} ingredientGroups={ingredientGroups} />
-            <BurgerConstructor selectedIngredients={ingredients} />
+            <BurgerIngredients ingredients={ingredientsItems} ingredientGroups={ingredientGroups} />
+            <BurgerConstructor selectedIngredients={ingredientsItems} />
           </main>
         </>
       }

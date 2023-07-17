@@ -5,8 +5,8 @@ const checkResponse = (res) => {
 };
 
 const API = {
-    getIngredients() {
-        return fetch(`${PATH}/ingredients`).then(res => checkResponse(res))
+    getIngredientsRequest() {
+        return fetch(`${PATH}/ingredients-`).then(res => checkResponse(res))
     }
 }
 
