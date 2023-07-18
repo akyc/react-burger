@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import {useSelector, useDispatch} from 'react-redux'
+import {getIngredientsDetails} from "../../services/actions/ingredientsDetails"
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './IngredientsList.module.css'
 import Modal from '../Modal/Modal'
@@ -8,24 +10,25 @@ import { ingredientType } from '../../utils/props-types'
 
 
 const IngredientsList = ({ ingredients, groupTitle }) => {
-    const [state, setState] = useState({
-        showModal: false,
-        showInfoIngredient: null
-    })
-    const modalOpenHandler = (e, ingredient) => {
-        setState({ showModal: true, showInfoIngredient: ingredient })
+    const dispatch = useDispatch()
+    const {ingredient} = useSelector(store => store.ingredientDetails)
+    const [isShowModal, setShowModal] = useState(false)
+    const modalOpenHandler = (e, item) => {
+        dispatch(getIngredientsDetails(item))
+        setShowModal(true)
     }
     const modalCloseHandler = (e) => {
-        setState({ showModal: false, showInfoIngredient: null })
+        dispatch(getIngredientsDetails({}))
+        setShowModal(false)
     }
     return (
         <div>
             <p className='text text_type_main-medium'>{groupTitle}</p>
             <div className={`${styles.group} d-flex pt-6 pb-10 pl-4`}>
-                {ingredients.map((ingredient) => {
-                    const { _id, name, price, image_mobile, image_large, image } = ingredient
+                {ingredients.map((item) => {
+                    const { _id, name, price, image_mobile, image_large, image } = item
                     return (
-                        <div key={_id} className={`${styles.item} clickable`} onClick={(e) => modalOpenHandler(e, ingredient)}>
+                        <div key={_id} className={`${styles.item} clickable`} onClick={(e) => modalOpenHandler(e, item)}>
                             <picture className='pl-4 pr-4 pb-4'>
                                 <source media='(min-width: 1024px)' src={image_large} />
                                 <source media='(max-width: 768px)' src={image_mobile} />
@@ -40,9 +43,9 @@ const IngredientsList = ({ ingredients, groupTitle }) => {
                         </div>
                     )
                 })}
-                {state.showModal && state.showInfoIngredient &&
+                {isShowModal && ingredient &&
                     <Modal header='Детали ингредиента' onClose={modalCloseHandler}>
-                        <IngredientDetails ingredient={state.showInfoIngredient} />
+                        <IngredientDetails />
                     </Modal>
                 }
             </div>

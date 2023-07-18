@@ -1,10 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import IngredientsList from '../IngredientsList/IngredientsList'
 import styles from './BurgerIngredients.module.css'
-import { ingredientType } from '../../utils/props-types'
-const BurgerIngredients = ({ ingredients, ingredientGroups }) => {
+import {
+    useSelector
+} from "react-redux";
+const BurgerIngredients = () => {
+    const { ingredientsItems, ingredientGroups } = useSelector(store => store.ingredients)
     const [current, setCurrent] = React.useState(ingredientGroups[0].name)
 
     return (
@@ -23,7 +25,7 @@ const BurgerIngredients = ({ ingredients, ingredientGroups }) => {
             </div>
             <div className={styles.ingredientsListContainer}>
                 {ingredientGroups.map(({ name, title }, i) => {
-                    const actualIngredients = ingredients.filter(({ type }) => type === name)
+                    const actualIngredients = ingredientsItems.filter(({ type }) => type === name)
                     return (
                         <IngredientsList ingredients={actualIngredients} groupTitle={title} key={i} />
                     )
@@ -32,11 +34,5 @@ const BurgerIngredients = ({ ingredients, ingredientGroups }) => {
         </section>
     )
 }
-BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientType).isRequired,
-    ingredientGroups: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string,
-        title: PropTypes.string,
-    })).isRequired
-}
+
 export default BurgerIngredients

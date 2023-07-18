@@ -4,17 +4,22 @@ import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktiku
 import Modal from '../Modal/Modal'
 import styles from './BurgerConstructor.module.css'
 import OrderInfo from '../OrderDetails/OrderDetails'
+import {
+    useDispatch,
+    useSelector
+} from "react-redux"
+import { getOrderId } from "../../services/actions/orderDetails";
 
-const BurgerConstructor = ({ selectedIngredients }) => {
-    const [state, setState] = useState({
-        showModal: false,
-        orderId: '034536'
-    })
+const BurgerConstructor = () => {
+    const dispatch = useDispatch()
+    const selectedIngredients = useSelector(store => store.ingredients.ingredientsItems)
+    const [isShowModal, setShowModal] = useState(false)
     const modalOpenHandler = (e) => {
-        setState({ ...state, showModal: true })
+        dispatch(getOrderId(['643d69a5c3f7b9001cfa093c','643d69a5c3f7b9001cfa0942']))
+        setShowModal(true )
     }
     const modalCloseHandler = (e) => {
-        setState({ ...state, showModal: false })
+        setShowModal(false )
     }
     return (
         <section className={`${styles.constructorContainer} mt-25 pl-4`}>
@@ -68,23 +73,14 @@ const BurgerConstructor = ({ selectedIngredients }) => {
                 <Button htmlType='button' type='primary' size='medium' onClick={modalOpenHandler}>
                     Оформить заказ
                 </Button>
-                {state.showModal && state.orderId &&
+                {isShowModal &&
                     <Modal onClose={modalCloseHandler}>
-                        <OrderInfo id={state.orderId} />
+                        <OrderInfo/>
                     </Modal>
                 }
             </div>
         </section>
     )
-}
-
-BurgerConstructor.propTypes = {
-    selectedIngredients: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        price: PropTypes.number,
-        image: PropTypes.string,
-    })).isRequired
 }
 
 export default BurgerConstructor

@@ -1,10 +1,15 @@
-import {GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "../actions/ingredients";
+import {GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_ERROR, GET_INGREDIENTS_SUCCESS} from "../actions/ingredients";
 
 const initialState = {
     ingredientsItems: [],
     ingredientsRequest: false,
-    ingredientsFailed: false,
-    ingredientsRequestError: null
+    ingredientsError: false,
+    ingredientsRequestError: null,
+    ingredientGroups: [
+        { name: 'bun', title: 'Булки' },
+        { name: 'sauce', title: 'Соусы' },
+        { name: 'main', title: 'Начинки' }
+    ]
 }
 export const ingredientsReducer = (state = initialState, action) => {
     switch(action.type){
@@ -16,15 +21,16 @@ export const ingredientsReducer = (state = initialState, action) => {
         case GET_INGREDIENTS_SUCCESS:
             return {
                 ...state,
-                ingredientsFailed: false,
+                ingredientsError: false,
                 ingredientsRequest: false,
+                ingredientsRequestError: null,
                 ingredientsItems: [...action.items]
             }
-        case GET_INGREDIENTS_FAILED:
+        case GET_INGREDIENTS_ERROR:
             return {
-                ...state,
+                ...initialState,
                 ingredientsRequest: false,
-                ingredientsFailed: true,
+                ingredientsError: true,
                 ingredientsRequestError: action.error
             }
         default:
