@@ -2,9 +2,7 @@ import React from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import IngredientsList from '../IngredientsList/IngredientsList'
 import styles from './BurgerIngredients.module.css'
-import {
-    useSelector
-} from "react-redux";
+import { useSelector } from "react-redux"
 const BurgerIngredients = () => {
     const { ingredientsItems, ingredientGroups } = useSelector(store => store.ingredients)
     const [current, setCurrent] = React.useState(ingredientGroups[0].name)

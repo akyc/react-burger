@@ -9,7 +9,6 @@ export function getIngredients(){
         dispatch({type: GET_INGREDIENTS_REQUEST})
         API.getIngredientsRequest().then(res => {
             if(res && res.success){
-                console.log(res.data)
                 dispatch({type: GET_INGREDIENTS_SUCCESS, items: res.data})
             }
         }).catch((error) => {
