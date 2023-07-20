@@ -2,16 +2,14 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import {useSelector, useDispatch} from 'react-redux'
 import {getIngredientsDetails} from "../../services/actions/ingredientsDetails"
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './IngredientsList.module.css'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import { ingredientType } from '../../utils/props-types'
-import Ingredient
-    from "../Ingredient/Ingredient";
+import Ingredient from "../Ingredient/Ingredient";
 
 
-const IngredientsList = ({ ingredients, groupTitle }) => {
+const IngredientsList = ({ ingredients, groupTitle, viewRef}) => {
     const dispatch = useDispatch()
     const {ingredient} = useSelector(store => store.ingredientDetails)
     const [isShowModal, setShowModal] = useState(false)
@@ -26,7 +24,7 @@ const IngredientsList = ({ ingredients, groupTitle }) => {
     return (
         <div>
             <p className='text text_type_main-medium'>{groupTitle}</p>
-            <div className={`${styles.group} d-flex pt-6 pb-10 pl-4`}>
+            <div className={`${styles.group} d-flex pt-6 pb-10 pl-4`} ref={viewRef}>
                 {ingredients.map((item, i) => {
                     return (
                         <Ingredient key={i} item={item}/>

@@ -13,10 +13,9 @@ import IngredientDraggable from "../IngredientDraggable/IngredientDraggable"
 const BurgerConstructor = () => {
     const dispatch = useDispatch()
     const {bun, ingredients} = useSelector(store => store.constructorBurger)
-    console.log(ingredients)
     const [isShowModal, setShowModal] = useState(false)
     const burger = [...ingredients, bun, bun]
-    const burgerTotalPrice = 0 //ingredients.length && bun ? burger.reduce((a,c) => a + c.price, 0) : 0
+    const burgerTotalPrice = ingredients.length && bun ? burger.reduce((a,c) => a + c.price, 0) : 0
     const addIngredient = ingredient => {
         ingredient = {
             ...ingredient,
@@ -45,20 +44,6 @@ const BurgerConstructor = () => {
         dispatch({type: DELETE_INGREDIENT, item})
     };
 
-    const moveIngredient = (dragIndex, hoverIndex) => {
-        const dragIngredient = ingredients[dragIndex]
-        console.log('0', ingredients, dragIndex, dragIngredient, hoverIndex)
-        if(!dragIngredient) return
-        console.log('1',dragIngredient)
-        const newIngredients = [...ingredients]
-        console.log('2',newIngredients)
-        newIngredients.splice(dragIndex, 1)
-        console.log('3',newIngredients)
-        newIngredients.splice(hoverIndex, 0, dragIngredient)
-        console.log('4',newIngredients)
-        dispatch({type: MOVE_INGREDIENT, dragIndex: dragIndex, hoverIndex: hoverIndex})
-    }
-
     return (
         <section className={`${styles.constructorContainer} mt-25 pl-4`} ref={drop}>
             <div className={`${styles.blockedElement} d-flex pb-3 pl-8`}>
@@ -73,7 +58,7 @@ const BurgerConstructor = () => {
                 }
             </div>
             <div className={`${styles.fillings} d-flex`}>
-                {ingredients && ingredients.map((item,i) => <IngredientDraggable key={item.uid} index={i} item={item} id={item.uid} deleteIngredient={deleteIngredient} moveIngredient={moveIngredient}/>)}
+                {ingredients && ingredients.map((item,i) => <IngredientDraggable key={item.uid} index={i} item={item} id={item.uid} deleteIngredient={deleteIngredient}/>)}
             </div>
             <div className={`${styles.blockedElement} d-flex pt-3 pl-8`}>
                 {bun &&

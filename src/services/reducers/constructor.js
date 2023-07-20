@@ -31,6 +31,7 @@ export const constructorBurgerReducer = (state = initialState, action) => {
                 ingredients: [...state.ingredients.filter( el => el.uid !== action.item.uid)]
             }
         case MOVE_INGREDIENT:
+            console.log(action.dragIndex, action.hoverIndex)
             return {
                 ...state,
                 ingredients: [...moveIngredient(action.dragIndex, action.hoverIndex)]
