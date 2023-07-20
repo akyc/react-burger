@@ -1,15 +1,17 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import IngredientsList from '../IngredientsList/IngredientsList'
 import styles from './BurgerIngredients.module.css'
 import { useSelector, useDispatch } from "react-redux"
 import { useInView } from "react-intersection-observer"
 import { SELECT_TABS } from "../../services/actions/tabs"
-const BurgerIngredients = () => {
-    const { ingredientsItems, ingredientGroups } = useSelector(store => store.ingredients)
 
+const getIngredients = store => store.ingredients
+const getCurrentTab = store => store.tabs.select
+const BurgerIngredients = () => {
+    const { ingredientsItems, ingredientGroups } = useSelector(getIngredients)
+    const current = useSelector(getCurrentTab)
     const dispatch = useDispatch()
-    const current = useSelector(store => store.tabs.select)
     const setCurrent = (current) => {
         dispatch({type: SELECT_TABS, select: current})
     }
@@ -32,6 +34,21 @@ const BurgerIngredients = () => {
             setCurrent("main");
         }
     }, [inViewBuns, inViewSauces, inViewMains]);
+
+    const buns = useMemo(
+        () => ingredientsItems.filter((item) => item.type === "bun"),
+        [ingredientsItems]
+    );
+
+    const sauces = useMemo(
+        () => ingredientsItems.filter((item) => item.type === "sauce"),
+        [ingredientsItems]
+    );
+
+    const mains = useMemo(
+        () => ingredientsItems.filter((item) => item.type === "main"),
+        [ingredientsItems]
+    );
     return (
         <section className={styles.ingredientsContainer}>
             <p className='text text_type_main-large pt-10 pb-5'>
@@ -47,9 +64,9 @@ const BurgerIngredients = () => {
                 })}
             </div>
             <div className={styles.ingredientsListContainer}>
-                <IngredientsList ingredients={ingredientsItems.filter(({ type }) => type === 'bun')} groupTitle={'Булки'} viewRef={bunsContainer}/>
-                <IngredientsList ingredients={ingredientsItems.filter(({ type }) => type === 'sauce')} groupTitle={'Соусы'} viewRef={saucesContainer}/>
-                <IngredientsList ingredients={ingredientsItems.filter(({ type }) => type === 'main')} groupTitle={'Начинки'} viewRef={mainsContainer}/>
+                <IngredientsList ingredients={buns} groupTitle={'Булки'} viewRef={bunsContainer}/>
+                <IngredientsList ingredients={sauces} groupTitle={'Соусы'} viewRef={saucesContainer}/>
+                <IngredientsList ingredients={mains} groupTitle={'Начинки'} viewRef={mainsContainer}/>
             </div>
         </section>
     )

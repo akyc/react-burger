@@ -9,10 +9,11 @@ import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
 import Modal from '../Modal/Modal'
 import styles from './App.module.css'
 
+const getIngredientsItems = store => store.ingredients
 
 const App = () => {
   const dispatch = useDispatch()
-  const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(store => store.ingredients)
+  const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(getIngredientsItems)
 
   useEffect(() => {
     dispatch(getIngredients())

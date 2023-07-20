@@ -1,4 +1,10 @@
-import {ADD_BUN, ADD_INGREDIENT, DELETE_INGREDIENT, MOVE_INGREDIENT} from "../actions/constructor";
+import {
+    ADD_BUN,
+    ADD_INGREDIENT,
+    DELETE_INGREDIENT,
+    MOVE_INGREDIENT,
+    RESET_INGREDIENT
+} from "../actions/constructor";
 
 const initialState = {
     ingredients:[],
@@ -31,10 +37,13 @@ export const constructorBurgerReducer = (state = initialState, action) => {
                 ingredients: [...state.ingredients.filter( el => el.uid !== action.item.uid)]
             }
         case MOVE_INGREDIENT:
-            console.log(action.dragIndex, action.hoverIndex)
             return {
                 ...state,
                 ingredients: [...moveIngredient(action.dragIndex, action.hoverIndex)]
+            }
+        case RESET_INGREDIENT:
+            return {
+                ...initialState
             }
         default:
             return state

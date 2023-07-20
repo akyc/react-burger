@@ -1,8 +1,11 @@
 import React from 'react'
 import {useSelector} from "react-redux"
 import styles from './IngredientDetails.module.css'
+
+const getIngredientDetails = store => store.ingredientDetails.ingredient
+
 const IngredientDetails = () => {
-    const { name, image_mobile, image_large, proteins, fat, calories, carbohydrates } = useSelector( store => store.ingredientDetails.ingredient)
+    const { name, image_mobile, image_large, proteins, fat, calories, carbohydrates } = useSelector(getIngredientDetails)
     const nutrients = [
         { title: 'Калории, ккал', value: calories },
         { title: 'Белки, г', value: proteins },

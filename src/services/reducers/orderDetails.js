@@ -1,4 +1,9 @@
-import {GET_ORDER_DETAILS_REQUEST, GET_ORDER_DETAILS_SUCCESS, GET_ORDER_DETAILS_ERROR} from "../actions/orderDetails";
+import {
+    GET_ORDER_DETAILS_REQUEST,
+    GET_ORDER_DETAILS_SUCCESS,
+    GET_ORDER_DETAILS_ERROR,
+    RESET_ORDER_DETAILS
+} from "../actions/orderDetails";
 const initialState = {
     orderId: null,
     orderRequestError: null,
@@ -27,6 +32,10 @@ export function orderDetailsReducer(state=initialState, action){
                 orderRequest: false,
                 orderError: true,
                 orderRequestError: action.error
+            }
+        case RESET_ORDER_DETAILS:
+            return {
+                ...initialState
             }
         default:
             return state

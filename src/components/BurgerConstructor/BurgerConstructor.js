@@ -1,21 +1,38 @@
-import React, { useRef, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../Modal/Modal'
 import styles from './BurgerConstructor.module.css'
 import OrderInfo from '../OrderDetails/OrderDetails'
 import { useDispatch, useSelector } from "react-redux"
 import { nanoid } from "@reduxjs/toolkit"
-import { getOrderId } from "../../services/actions/orderDetails"
-import { ADD_BUN, ADD_INGREDIENT, DELETE_INGREDIENT, MOVE_INGREDIENT } from "../../services/actions/constructor"
+import {
+    getOrderId,
+    RESET_ORDER_DETAILS
+} from "../../services/actions/orderDetails"
+import {
+    ADD_BUN,
+    ADD_INGREDIENT,
+    DELETE_INGREDIENT,
+    RESET_INGREDIENT
+} from "../../services/actions/constructor"
 import { useDrop } from "react-dnd"
 import IngredientDraggable from "../IngredientDraggable/IngredientDraggable"
 
+const getConstructorItems = store => store.constructorBurger
+const getOrderDetails = store => store.orderDetails
 const BurgerConstructor = () => {
     const dispatch = useDispatch()
-    const {bun, ingredients} = useSelector(store => store.constructorBurger)
+    const {bun, ingredients} = useSelector(getConstructorItems)
+    const {orderId} = useSelector(getOrderDetails)
     const [isShowModal, setShowModal] = useState(false)
-    const burger = [...ingredients, bun, bun]
-    const burgerTotalPrice = ingredients.length && bun ? burger.reduce((a,c) => a + c.price, 0) : 0
+    const burger = useMemo(
+        () => [...ingredients, bun, bun],
+        [ingredients, bun]
+    )
+    const burgerTotalPrice = useMemo(
+        () => ingredients.length && bun ? burger.reduce((a,c) => a + c.price, 0) : 0,
+        [ingredients, bun, burger]
+    )
     const addIngredient = ingredient => {
         ingredient = {
             ...ingredient,
@@ -33,11 +50,17 @@ const BurgerConstructor = () => {
         drop: (item) => addIngredient(item)
     }));
     const modalOpenHandler = (e) => {
+        if(orderId){
+            dispatch({type: RESET_ORDER_DETAILS})
+        }
         const idsList = burger.map(el => el._id)
         dispatch(getOrderId(idsList))
         setShowModal(true )
     }
     const modalCloseHandler = (e) => {
+        if(orderId){
+            dispatch({type: RESET_INGREDIENT})
+        }
         setShowModal(false )
     }
     const deleteIngredient = (item) => {
