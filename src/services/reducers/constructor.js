@@ -4,7 +4,16 @@ const initialState = {
     ingredients:[],
     bun: null
 }
+
 export const constructorBurgerReducer = (state = initialState, action) => {
+    const moveIngredient = (dragIndex, hoverIndex) => {
+        const dragIngredient = state.ingredients[dragIndex]
+        const newIngredients = [...state.ingredients]
+        newIngredients.splice(dragIndex, 1)
+        newIngredients.splice(hoverIndex, 0, dragIngredient)
+        return newIngredients
+    }
+
     switch(action.type){
         case ADD_BUN:
             return {
@@ -24,7 +33,7 @@ export const constructorBurgerReducer = (state = initialState, action) => {
         case MOVE_INGREDIENT:
             return {
                 ...state,
-                ingredients: [...action.item]
+                ingredients: [...moveIngredient(action.dragIndex, action.hoverIndex)]
             }
         default:
             return state
