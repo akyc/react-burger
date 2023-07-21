@@ -1,48 +1,40 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import {useSelector, useDispatch} from 'react-redux'
+import {getIngredientsDetails} from "../../services/actions/ingredientsDetails"
 import styles from './IngredientsList.module.css'
 import Modal from '../Modal/Modal'
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import { ingredientType } from '../../utils/props-types'
+import Ingredient from "../Ingredient/Ingredient";
 
+const getIngredientDetails = store => store.ingredientDetails
 
-const IngredientsList = ({ ingredients, groupTitle }) => {
-    const [state, setState] = useState({
-        showModal: false,
-        showInfoIngredient: null
-    })
-    const modalOpenHandler = (e, ingredient) => {
-        setState({ showModal: true, showInfoIngredient: ingredient })
+const IngredientsList = ({ ingredients, groupTitle, viewRef}) => {
+    const dispatch = useDispatch()
+    const {ingredient} = useSelector(getIngredientDetails)
+    const  constructorBurger = useSelector(store => store.constructorBurger)
+    const [isShowModal, setShowModal] = useState(false)
+    const modalOpenHandler = (e, item) => {
+        dispatch(getIngredientsDetails(item))
+        setShowModal(true)
     }
     const modalCloseHandler = (e) => {
-        setState({ showModal: false, showInfoIngredient: null })
+        dispatch(getIngredientsDetails({}))
+        setShowModal(false)
     }
     return (
         <div>
             <p className='text text_type_main-medium'>{groupTitle}</p>
-            <div className={`${styles.group} d-flex pt-6 pb-10 pl-4`}>
-                {ingredients.map((ingredient) => {
-                    const { _id, name, price, image_mobile, image_large, image } = ingredient
+            <div className={`${styles.group} d-flex pt-6 pb-10 pl-4`} ref={viewRef}>
+                {ingredients.map((item, i) => {
                     return (
-                        <div key={_id} className={`${styles.item} clickable`} onClick={(e) => modalOpenHandler(e, ingredient)}>
-                            <picture className='pl-4 pr-4 pb-4'>
-                                <source media='(min-width: 1024px)' src={image_large} />
-                                <source media='(max-width: 768px)' src={image_mobile} />
-                                <img src={image} alt={name} />
-                            </picture>
-                            <div className={`${styles.cost} text text_type_digits-default d-flex pt-1 pb-1`}>
-                                {price} <CurrencyIcon type='primary' />
-                            </div>
-                            <p className='text text_type_main-default text-center'>
-                                {name}
-                            </p>
-                        </div>
+                        <Ingredient key={i} item={item} modalOpenHandler={modalOpenHandler}/>
                     )
                 })}
-                {state.showModal && state.showInfoIngredient &&
+                {isShowModal && ingredient &&
                     <Modal header='Детали ингредиента' onClose={modalCloseHandler}>
-                        <IngredientDetails ingredient={state.showInfoIngredient} />
+                        <IngredientDetails />
                     </Modal>
                 }
             </div>

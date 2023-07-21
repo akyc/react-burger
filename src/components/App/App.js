@@ -1,51 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect} from 'react'
+import {useDispatch, useSelector} from "react-redux"
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import {getIngredients} from "../../services/actions/ingredients"
 import AppHeader from '../AppHeader/AppHeader'
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients'
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor'
 import Modal from '../Modal/Modal'
-import API from '../../utils/api'
 import styles from './App.module.css'
 
+const getIngredientsItems = store => store.ingredients
+
 const App = () => {
-  const ingredientGroups = [
-    { name: 'bun', title: 'Булки' },
-    { name: 'sauce', title: 'Соусы' },
-    { name: 'main', title: 'Начинки' }
-  ]
-  const [ingredients, setIngredients] = useState([])
-  const [isLoading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const dispatch = useDispatch()
+  const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(getIngredientsItems)
 
   useEffect(() => {
-    setLoading(true)
-    API.getIngredients()
-      .then(({ data }) => setIngredients(data))
-      .catch((err) => setError(err.status))
-      .finally(() => setLoading(false))
+    dispatch(getIngredients())
   }, [])
   
   return (
-    <div className='App'>
-      {isLoading && 'Загрузка...'}
-      {
-        error &&
-        <Modal header='Ошибка'>
-          <p className='text text_type_main-medium pt-20 pb-4'>Код ошибки: {error}</p>
-          <p className='text text_type_main-default pt-20 pb-10'>Попробуйте перезагрузить страницу или вернуться позже</p>
-        </Modal>
-      }
-      {
-        !isLoading &&
-        !error &&
-        <>
-          <AppHeader />
-          <main className={styles.main}>
-            <BurgerIngredients ingredients={ingredients} ingredientGroups={ingredientGroups} />
-            <BurgerConstructor selectedIngredients={ingredients} />
-          </main>
-        </>
-      }
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className='App'>
+        {ingredientsRequest && 'Загрузка...'}
+        {
+          ingredientsError &&
+          <Modal header='Ошибка'>
+            <p className='text text_type_main-medium pt-20 pb-4'>Код ошибки: {ingredientsRequestError}</p>
+            <p className='text text_type_main-default pt-20 pb-10'>Попробуйте перезагрузить страницу или вернуться позже</p>
+          </Modal>
+        }
+        {
+          !ingredientsRequest &&
+          !ingredientsError&&
+          <>
+            <AppHeader />
+            <main className={styles.main}>
+              <BurgerIngredients/>
+              <BurgerConstructor/>
+            </main>
+          </>
+        }
+      </div>
+    </DndProvider>
   )
 }
 
