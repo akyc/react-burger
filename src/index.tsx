@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { createStore, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
@@ -22,7 +23,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-        <App />
+        <Router>
+            <Routes>
+                <Route path='/' element={<App />} />
+            </Routes>
+        </Router>
     </Provider>
   </React.StrictMode>
 )
