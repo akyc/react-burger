@@ -25,8 +25,7 @@ export const getUserInfoThunk = () => {
     }
 }
 
-export const patchUserInfoThunk = (user) => {
-    const access = getCookie('access')
+export const patchUserInfoThunk = (user,access) => {
     return function(dispatch) {
         API.patchUserInfo(user, access)
             .then((data) => {

@@ -37,7 +37,7 @@ const Login = () => {
     const [password, setPassword] = useState('')
 
     if(isLogin){
-        return <Navigate to='/profile' />
+        navigate('/profile')
     }
     return (
         <main className={styles.main}>

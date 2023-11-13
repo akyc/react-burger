@@ -10,7 +10,8 @@ import { logoutUserThunk } from '../../services/actions/login'
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './profile.module.css'
 import {
-    deleteCookie
+    deleteCookie,
+    getCookie
 } from "../../utils/cookies";
 
 const Profile = () => {
@@ -38,8 +39,8 @@ const Profile = () => {
 
     const saveInfo = (e) => {
         e.preventDefault();
-        const { email, name, password } = value;
-        dispatch(patchUserInfoThunk(email, name, password));
+        const access = getCookie('access')
+        dispatch(patchUserInfoThunk(value, access));
         setValue({
             name: currentName,
             email: currentEmail,
