@@ -1,3 +1,4 @@
+
 const PATH = "https://norma.nomoreparties.space/api"
 
 const checkResponse = (res) => {
@@ -16,6 +17,92 @@ const API = {
             },
             body: JSON.stringify({ingredients})
             }).then(res => checkResponse(res))
+    },
+    loginUserRequest(user) {
+        const { email, password } = user;
+        return fetch(`${PATH}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              password
+            })}).then(res => checkResponse(res))
+    },
+    logoutUserRequest(token) {
+        return fetch(`${PATH}/auth/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                token
+            })
+        }).then(res => checkResponse(res))
+    },
+    getUserInfo(access) {
+        return fetch(`${PATH}/auth/user`, {
+            headers: {
+                authorization: 'Bearer ' + access,
+                'Content-Type': 'application/json'
+            }}).then(res => checkResponse(res))
+    },
+    patchUserInfo(user, access) {
+        const {email, name, password} = user
+        return fetch(`${PATH}/auth/user`, {
+            method: 'PATCH',
+            headers: {
+                authorization: 'Bearer ' + access,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                name,
+                password
+            })
+        }).then(res => checkResponse(res))
+    },
+    getRegisterRequest(user) {
+        const { email, password, name } = user;
+        return fetch(`${PATH}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email,
+                password,
+                name
+            })
+        }).then(res => checkResponse(res))
+    },
+    getPasswordResetRequest(email){
+        return fetch(`${PATH}/password-reset`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email
+            })
+        }).then(res => checkResponse(res))
+    },
+    getPasswordRecoverRequest(password, token){
+        console.log(password, token)
+        return fetch(`${PATH}/password-reset/reset`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password,
+                token
+            })
+        }).then(res => checkResponse(res))
+    },
+    refreshToken(token){
+        fetch(`${PATH}/auth/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                token
+            })
+        }).then(res => checkResponse(res)).catch(console.warn)
     }
 }
 

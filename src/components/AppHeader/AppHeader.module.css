@@ -34,3 +34,11 @@
     width: 24%;
     justify-content: center;
 }
+
+.active{
+    color: #fff;
+}
+
+.active:hover {
+    color: var(--text-inactive-color);
+}
