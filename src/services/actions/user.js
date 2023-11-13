@@ -38,7 +38,7 @@ export const patchUserInfoThunk = (user) => {
             .catch((err) => {
                 if (err) {
                     const refresh = getCookie('refresh')
-                    API.refreshToken()
+                    API.refreshToken(refresh)
                 }
             })
     }

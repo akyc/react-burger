@@ -3,17 +3,21 @@ import React, {
     useState
 } from 'react';
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate } from 'react-router-dom';
+import {
+    Link,
+    Navigate,
+    useNavigate
+} from 'react-router-dom';
 import { getLoginUser } from '../../services/actions/login';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserInfoThunk } from '../../services/actions/user';
 import styles from './login.module.css'
 
 
 const Login = () => {
-    const login = useSelector(state => state.login.login);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const isLogin = JSON.parse(sessionStorage.getItem('login'))
+    const login = useSelector( state => state.login.login)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,11 +31,14 @@ const Login = () => {
         if (login) {
             navigate('/')
         }
-    }, [login])
+    }, [login, navigate])
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    if(isLogin){
+        return <Navigate to='/profile' />
+    }
     return (
         <main className={styles.main}>
             <form className={styles.form} onSubmit={handleSubmit}>

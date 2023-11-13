@@ -11,9 +11,8 @@ import styles from './App.module.css'
 import {
     Route,
     Routes,
-    useHistory,
     useLocation
-} from 'react-router-dom';
+} from 'react-router-dom'
 import Ingredients
     from "../../pages/ingredients/ingredients";
 import Login
@@ -35,11 +34,11 @@ import {
 const getIngredientsItems = store => store.ingredients
 
 const App = () => {
-  const dispatch = useDispatch()
-  const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(getIngredientsItems)
-    const location = useLocation();
-    const background = location.state && location.state.background;
-    const _id = ''
+    const dispatch = useDispatch()
+    const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(getIngredientsItems)
+    const location = useLocation()
+    const background = location.state && location.state.background
+    const { _id } = useSelector(state => state.ingredientDetails.ingredient)
 
   useEffect(() => {
     dispatch(getIngredients())
