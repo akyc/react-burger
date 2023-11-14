@@ -15,11 +15,13 @@ export const getUserInfoThunk = () => {
                     dispatch({type: GET_USER_INFO, data});
                 }
             })
-            .catch((err) => {
-                if (err.message === "jwt expired") {
-                    const refresh = getCookie('refresh')
-                    API.refreshToken(refresh)
-                }
+            .catch((err) =>{
+                err.json().then(error => {
+                    if (error.message === "jwt expired") {
+                        const refresh = getCookie('refresh')
+                        API.refreshToken(refresh)
+                    }
+                })
             })
     }
 }
