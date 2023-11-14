@@ -11,7 +11,8 @@ import styles from './App.module.css'
 import {
     Route,
     Routes,
-    useLocation
+    useLocation,
+    useNavigate
 } from 'react-router-dom'
 import Ingredients
     from "../../pages/ingredients/ingredients";
@@ -30,20 +31,27 @@ import NotFound
 import {
     ProtectedRoute
 } from "../ProtectedRoute/ProtectedRoute";
+import IngredientDetails
+    from "../IngredientDetails/IngredientDetails";
 
 const getIngredientsItems = store => store.ingredients
 
 const App = () => {
     const dispatch = useDispatch()
-    const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(getIngredientsItems)
     const location = useLocation()
+    const navigate = useNavigate()
+    const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(getIngredientsItems)
     const background = location.state && location.state.background
-    const { _id } = useSelector(state => state.ingredientDetails.ingredient)
 
-  useEffect(() => {
-    dispatch(getIngredients())
-  }, [])
-  
+    useEffect(() => {
+        dispatch(getIngredients())
+    }, [])
+
+    const modalCloseHandler = (e) => {
+        //dispatch(getIngredientsDetails({}))
+        navigate('/', { replace: true })
+    }
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className='App'>
@@ -61,7 +69,13 @@ const App = () => {
           <>
             <AppHeader />
               <Routes location={background || location}>
-                  <Route path={`/ingredients/:${_id}`} element={<Ingredients />} />
+                  <Route index path='/' element={
+                      <main className={styles.main}>
+                          <BurgerIngredients/>
+                          <BurgerConstructor/>
+                      </main>
+                  }/>
+                  <Route path='/ingredients/:id' element={<IngredientDetails/>} />
                   <Route path='/login' element={<Login />} />
                   <Route path='/register' element={<Register />} />
                   <Route path='/forgot-password' element={<ForgotPassword />} />
@@ -71,14 +85,17 @@ const App = () => {
                           <Profile/>
                       </ProtectedRoute>
                   } />
-                  <Route path='/' element={
-                      <main className={styles.main}>
-                          <BurgerIngredients/>
-                          <BurgerConstructor/>
-                      </main>
-                  } />
                   <Route path='*' element={<NotFound />} />
-              </Routes>
+                </Routes>
+                {background && (
+                  <Routes>
+                      <Route path='/ingredients/:id' element={
+                          <Modal header='Детали ингредиента' onClose={modalCloseHandler}>
+                              <IngredientDetails />
+                          </Modal>
+                      } />
+                  </Routes>
+                )}
           </>
         }
       </div>

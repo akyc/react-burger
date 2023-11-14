@@ -83,7 +83,6 @@ const API = {
         }).then(res => checkResponse(res))
     },
     getPasswordRecoverRequest(password, token){
-        console.log(password, token)
         return fetch(`${PATH}/password-reset/reset`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

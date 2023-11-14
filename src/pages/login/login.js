@@ -5,7 +5,6 @@ import React, {
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import {
     Link,
-    Navigate,
     useNavigate
 } from 'react-router-dom';
 import { getLoginUser } from '../../services/actions/login';

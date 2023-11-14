@@ -7,7 +7,6 @@ export const PATCH_USER_INFO = 'PATCH_USER_INFO';
 
 export const getUserInfoThunk = () => {
     const access = getCookie('access')
-
     return function(dispatch) {
         API.getUserInfo(access)
             .then((data) => {
@@ -17,7 +16,7 @@ export const getUserInfoThunk = () => {
                 }
             })
             .catch((err) => {
-                if (err) {
+                if (err.message === "jwt expired") {
                     const refresh = getCookie('refresh')
                     API.refreshToken(refresh)
                 }

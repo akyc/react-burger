@@ -21,13 +21,13 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 root.render(
-    <BrowserRouter>
-      <React.StrictMode>
-        <Provider store={store}>
-            <App />
-        </Provider>
-      </React.StrictMode>
-    </BrowserRouter>
+    <React.StrictMode>
+        <BrowserRouter>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </BrowserRouter>
+    </React.StrictMode>
 )
 
 reportWebVitals()
