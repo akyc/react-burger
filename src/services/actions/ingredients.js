@@ -1,4 +1,4 @@
-import API from "../../utils/api"
+import API from '../../utils/api'
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST'
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS'

@@ -8,8 +8,12 @@ import {
 import {
     useSelector
 } from "react-redux";
+import {
+    Link,
+    useLocation
+} from "react-router-dom";
 
-const Ingredient = ({item, modalOpenHandler}) => {
+const Ingredient = ({item}) => {
     const { _id, name, price, image_mobile, image_large, image } = item
     const {ingredients, bun} = useSelector(store => store.constructorBurger)
     const amount = [...ingredients, bun, bun].filter( el => el?._id === _id).length
@@ -17,10 +21,10 @@ const Ingredient = ({item, modalOpenHandler}) => {
         type: 'item',
         item
     }))
-
+    const location = useLocation();
 
     return (
-        <div className={`${styles.item} clickable`} ref={drag} onClick={(e) => modalOpenHandler(e,item)}>
+        <Link className={`${styles.item}`} ref={drag} to={`/ingredients/${_id}`} state={{background: location }}>
              <picture className='pl-4 pr-4 pb-4'>
                  <source media='(min-width: 1024px)' src={image_large} />
                  <source media='(max-width: 768px)' src={image_mobile} />
@@ -33,7 +37,7 @@ const Ingredient = ({item, modalOpenHandler}) => {
                  {name}
              </p>
             {!!amount && <Counter count={amount} size='default' extraClass='m-1' />}
-         </div>
+        </Link>
     )
 }
 

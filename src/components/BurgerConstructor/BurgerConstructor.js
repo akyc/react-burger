@@ -17,11 +17,16 @@ import {
 } from "../../services/actions/constructor"
 import { useDrop } from "react-dnd"
 import IngredientDraggable from "../IngredientDraggable/IngredientDraggable"
+import {
+    useNavigate
+} from "react-router-dom";
 
 const getConstructorItems = store => store.constructorBurger
 const getOrderDetails = store => store.orderDetails
 const BurgerConstructor = () => {
+    const login = useSelector(state => state.login.login) || JSON.parse(sessionStorage.getItem('login'))
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {bun, ingredients} = useSelector(getConstructorItems)
     const {orderId} = useSelector(getOrderDetails)
     const [isShowModal, setShowModal] = useState(false)
@@ -50,6 +55,9 @@ const BurgerConstructor = () => {
         drop: (item) => addIngredient(item)
     }));
     const modalOpenHandler = (e) => {
+        if (!login) {
+            navigate('/login');
+        }
         if(orderId){
             dispatch({type: RESET_ORDER_DETAILS})
         }
