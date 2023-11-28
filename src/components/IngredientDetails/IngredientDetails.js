@@ -43,6 +43,7 @@ const IngredientDetails = () => {
             )
         }
     }
+    return (null)
 }
 
 export default IngredientDetails

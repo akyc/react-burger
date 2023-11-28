@@ -20,8 +20,9 @@ import IngredientDraggable from "../IngredientDraggable/IngredientDraggable"
 import {
     useNavigate
 } from "react-router-dom";
-
+// @ts-ignore
 const getConstructorItems = store => store.constructorBurger
+// @ts-ignore
 const getOrderDetails = store => store.orderDetails
 const BurgerConstructor = () => {
     const login = useSelector(state => state.login.login) || JSON.parse(sessionStorage.getItem('login'))

@@ -14,8 +14,6 @@ import {
     useLocation,
     useNavigate
 } from 'react-router-dom'
-import Ingredients
-    from "../../pages/ingredients/ingredients";
 import Login
     from "../../pages/login/login";
 import Register
@@ -34,23 +32,31 @@ import {
 import IngredientDetails
     from "../IngredientDetails/IngredientDetails";
 
+import {Location} from "react-router-dom";
+
+// @ts-ignore
 const getIngredientsItems = store => store.ingredients
 
 const App = () => {
     const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
+    // @ts-ignore
     const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(getIngredientsItems)
-    const background = location.state && location.state.background
+
+    const locationState = location.state as {background: Location}
+    const background = locationState && locationState.background
 
     useEffect(() => {
+        // @ts-ignore
         dispatch(getIngredients())
     }, [])
 
-    const modalCloseHandler = (e) => {
-        //dispatch(getIngredientsDetails({}))
+    const modalCloseHandler = () => {
         navigate('/', { replace: true })
     }
+
+
 
   return (
     <DndProvider backend={HTML5Backend}>

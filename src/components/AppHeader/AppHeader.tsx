@@ -3,8 +3,13 @@ import { Logo, ProfileIcon, BurgerIcon, ListIcon } from '@ya.praktikum/react-dev
 import styles from './AppHeader.module.css'
 import { NavLink } from 'react-router-dom';
 
+
 const AppHeader = () => {
-    const login = JSON.parse(sessionStorage.getItem('login'));
+    const sessionStorageLogin: string | null = sessionStorage.getItem('login')
+    let login : string | null = null
+    if(sessionStorageLogin) {
+        login = JSON.parse(sessionStorageLogin);
+    }
 
     return (
         <header className={`${styles.header} pt-4 pb-4`}>
@@ -24,7 +29,7 @@ const AppHeader = () => {
                     <NavLink to={login ? { pathname: '/profile' } : { pathname: '/login' }}
                              className={`${styles.button} text text_type_main-default p-5`}
                     >
-                        {({ isActive}) => (
+                        {({isActive}) => (
                             <>
                                 <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
                                 <span className={isActive ? `${styles.active}` : ''}>Личный кабинет</span>
