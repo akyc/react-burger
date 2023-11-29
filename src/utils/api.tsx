@@ -105,4 +105,12 @@ const API = {
     }
 }
 
+export const checkUserAuth = () => {
+    const sessionStorageLogin: string | null = sessionStorage.getItem('login')
+    let login : string | null = null
+    if(sessionStorageLogin) {
+        login = JSON.parse(sessionStorageLogin);
+    }
+    return login
+}
 export default API
