@@ -1,3 +1,4 @@
+import {IIngredient} from "./types";
 
 const PATH = "https://norma.nomoreparties.space/api"
 
@@ -10,28 +11,8 @@ type TRefreshResponse = TServerResponse<{
     accessToken: string;
 }>;
 
-type TUser = {
-    name: string;
-    email: string;
-    password: string;
-}
-type TIngredient = {
-    _id: string;
-    name: string;
-    "type": "bun";
-    proteins: number;
-    fat: number;
-    carbohydrates: number;
-    calories: number;
-    price: number;
-    image: string;
-    image_mobile: string;
-    image_large: string;
-    __v: number;
-}
-
 type TIngredientsResponse = TServerResponse<{
-    data: TIngredient[]
+    data: IIngredient[]
 }>
 const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : Promise.reject(res);

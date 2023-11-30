@@ -26,6 +26,10 @@ import {
 import {
     pageRoutes
 } from "../../utils/constants";
+import {
+    IIngredient,
+    IIngredientId
+} from "../../utils/types";
 
 const BurgerConstructor:FC = () => {
     const isUser = checkUserAuth()
@@ -36,7 +40,7 @@ const BurgerConstructor:FC = () => {
     // @ts-ignore
     const {orderId} = useSelector(store => store.orderDetails)
     const [isShowModal, setShowModal] = useState(false)
-    const burger = useMemo(
+    const burger: IIngredient[] = useMemo(
         () => [...ingredients, bun, bun],
         [ingredients, bun]
     )
@@ -44,17 +48,18 @@ const BurgerConstructor:FC = () => {
         () => ingredients.length && bun ? burger.reduce((a,c) => a + c.price, 0) : 0,
         [ingredients, bun, burger]
     )
-    const addIngredient = ingredient => {
+    const addIngredient = (ingredient: IIngredient ) => {
         ingredient = {
             ...ingredient,
             uid: nanoid(),
         }
         if(ingredient.type === 'bun'){
+            //@ts-ignore
             dispatch({type: ADD_BUN, item: ingredient})
         } else {
+            //@ts-ignore
             dispatch({type: ADD_INGREDIENT, item: ingredient})
         }
-
     }
     const [, drop] = useDrop(() => ({
         accept: 'item',
@@ -65,6 +70,7 @@ const BurgerConstructor:FC = () => {
             navigate(pageRoutes.login);
         }
         if(orderId){
+            //@ts-ignore
             dispatch({type: RESET_ORDER_DETAILS})
         }
         const idsList = burger.map(el => el._id)
@@ -78,7 +84,8 @@ const BurgerConstructor:FC = () => {
         }
         setShowModal(false )
     }
-    const deleteIngredient = (item) => {
+    const deleteIngredient = (item: IIngredient) => {
+        //@ts-ignore
         dispatch({type: DELETE_INGREDIENT, item})
     };
 
@@ -96,7 +103,7 @@ const BurgerConstructor:FC = () => {
                 }
             </div>
             <div className={`${styles.fillings} d-flex`}>
-                {ingredients && ingredients.map((item,i) => <IngredientDraggable key={item.uid} index={i} item={item} id={item.uid} deleteIngredient={deleteIngredient}/>)}
+                {ingredients && ingredients.map((item: IIngredient ,i: number) => <IngredientDraggable key={item.uid} index={i} item={item} id={item.uid} deleteIngredient={deleteIngredient}/>)}
             </div>
             <div className={`${styles.blockedElement} d-flex pt-3 pl-8`}>
                 {bun &&

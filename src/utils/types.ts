@@ -13,7 +13,7 @@ export interface IIngredient extends IIngredientId {
     image_large: string;
     image_mobile: string;
     price: number;
-    __v: number;
+    __v?: number;
     uid?: string;
 }
 
