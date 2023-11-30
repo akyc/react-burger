@@ -63,7 +63,7 @@ const BurgerConstructor:FC = () => {
     }
     const [, drop] = useDrop(() => ({
         accept: 'item',
-        drop: (item) => addIngredient(item)
+        drop: (item: IIngredient) => addIngredient(item)
     }));
     const modalOpenHandler = () => {
         if (!isUser) {

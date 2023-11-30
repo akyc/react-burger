@@ -14,7 +14,7 @@ export interface IIngredient extends IIngredientId {
     image_mobile: string;
     price: number;
     __v?: number;
-    uid?: string;
+    uid: string;
 }
 
 export type TUserInfo = {

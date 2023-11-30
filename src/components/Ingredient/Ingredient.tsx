@@ -1,4 +1,6 @@
-import React from "react"
+import React, {
+    FC
+} from "react"
 import { useDrag } from 'react-dnd'
 import styles from '../IngredientsList/IngredientsList.module.css'
 import {
@@ -15,7 +17,10 @@ import {
 import {IIngredient} from "../../utils/types";
 import {pageRoutes} from "../../utils/constants";
 
-const Ingredient = ({item}:{[item: string] : IIngredient}) => {
+interface IIngredientOne {
+    item: IIngredient;
+}
+const Ingredient: FC<IIngredientOne>= ({item}) => {
     const { _id, name, price, image_mobile, image_large, image } = item
     //@ts-ignore
     const {ingredients, bun} = useSelector(store => store.constructorBurger)

@@ -1,20 +1,29 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, {
+    FC,
+    ForwardedRef,
+    useState
+} from 'react'
 import {useSelector} from 'react-redux'
 import styles from './IngredientsList.module.css'
-import { ingredientType } from '../../utils/types'
 import Ingredient from "../Ingredient/Ingredient";
+import {
+    IIngredient
+} from "../../utils/types";
 
-const getIngredientDetails = store => store.ingredientDetails
-
-const IngredientsList = ({ ingredients, groupTitle, viewRef}) => {
+interface IIngredientsList {
+    ingredients: IIngredient[];
+    groupTitle: string;
+    viewRef: ForwardedRef<HTMLDivElement>;
+}
+const IngredientsList: FC<IIngredientsList> = ({ ingredients, groupTitle, viewRef}) => {
+    //@ts-ignore
     const  constructorBurger = useSelector(store => store.constructorBurger)
 
     return (
         <div>
             <p className='text text_type_main-medium'>{groupTitle}</p>
             <div className={`${styles.group} d-flex pt-6 pb-10 pl-4`} ref={viewRef}>
-                {ingredients.map((item, i) => {
+                {ingredients.map((item: IIngredient, i:number) => {
                     return (
                         <Ingredient key={i} item={item}/>
                     )
@@ -22,11 +31,6 @@ const IngredientsList = ({ ingredients, groupTitle, viewRef}) => {
             </div>
         </div>
     )
-}
-
-IngredientsList.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientType).isRequired,
-    groupTitle: PropTypes.string.isRequired
 }
 
 export default IngredientsList

@@ -1,7 +1,12 @@
 import React, {
+    FC,
     useRef
 } from 'react'
-import { useDrag,useDrop } from "react-dnd"
+import {
+    useDrag,
+    useDrop
+} from "react-dnd"
+import type { XYCoord, Identifier } from 'dnd-core';
 import styles from "../BurgerConstructor/BurgerConstructor.module.css";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -10,9 +15,23 @@ import {
 import {
     MOVE_INGREDIENT
 } from "../../services/actions/constructor";
+import {
+    IIngredient
+} from "../../utils/types";
 
-const IngredientDraggable = ({item, index, id, deleteIngredient, moveIngredient}) => {
-    const ref = useRef(null)
+interface IDragItem {
+    id: string;
+    index: number;
+    type: string;
+}
+interface IIngredientDraggable {
+    item: IIngredient;
+    index: number;
+    id: string;
+    deleteIngredient: (item: IIngredient) => void;
+}
+const IngredientDraggable: FC<IIngredientDraggable> = ({item, index, id, deleteIngredient}) => {
+    const ref = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
     const [{isDragging}, drag] = useDrag(() => ({
         type: 'ingredient',
@@ -21,7 +40,7 @@ const IngredientDraggable = ({item, index, id, deleteIngredient, moveIngredient}
           isDragging: monitor.isDragging()
         })
     }))
-    const [{handlerId},drop] = useDrop(() => ({
+    const [{handlerId},drop] = useDrop<IDragItem, void, { handlerId: Identifier | null }>(() => ({
         accept: 'ingredient',
         collect(monitor) {
             return {
@@ -37,10 +56,10 @@ const IngredientDraggable = ({item, index, id, deleteIngredient, moveIngredient}
             if (!ref.current) {
                 return
             }
-            const {bottom, top} = ref.current.getBoundingClientRect()
+            const {bottom, top} = ref.current?.getBoundingClientRect()
             const hoverMiddleY = (bottom - top) / 2
             const clientOffset = monitor.getClientOffset()
-            const hoverClientY = clientOffset.y - top
+            const hoverClientY = (clientOffset as XYCoord).y - top
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return
             }

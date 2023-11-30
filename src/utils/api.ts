@@ -1,4 +1,7 @@
-import {IIngredient} from "./types";
+import {
+    IIngredient,
+    TUserInfo
+} from "./types";
 
 const PATH = "https://norma.nomoreparties.space/api"
 
@@ -22,7 +25,7 @@ const API = {
     getIngredientsRequest(): Promise<TIngredientsResponse> {
         return fetch(`${PATH}/ingredients`).then(res => checkResponse<TIngredientsResponse>(res))
     },
-    storeOrder(ingredients){
+    storeOrder(ingredients: Array<string>){
         return fetch(`${PATH}/orders`, {
             method: 'POST',
             headers: {
@@ -31,7 +34,7 @@ const API = {
             body: JSON.stringify({ingredients})
             }).then(res => checkResponse(res))
     },
-    loginUserRequest(user: TUser) {
+    loginUserRequest(user: TUserInfo) {
         const { email, password } = user;
         return fetch(`${PATH}/auth/login`, {
             method: 'POST',
@@ -59,7 +62,7 @@ const API = {
                 'Content-Type': 'application/json'
             }}).then(res => checkResponse(res))
     },
-    patchUserInfo(user: TUser, access: string) {
+    patchUserInfo(user: TUserInfo, access: string) {
         const {email, name, password} = user
         return fetch(`${PATH}/auth/user`, {
             method: 'PATCH',
@@ -74,7 +77,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getRegisterRequest(user) {
+    getRegisterRequest(user: TUserInfo) {
         const { email, password, name } = user;
         return fetch(`${PATH}/auth/register`, {
             method: 'POST',
