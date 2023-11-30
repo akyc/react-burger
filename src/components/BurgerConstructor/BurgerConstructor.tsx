@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, FC } from 'react'
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../Modal/Modal'
 import styles from './BurgerConstructor.module.css'
@@ -20,16 +20,21 @@ import IngredientDraggable from "../IngredientDraggable/IngredientDraggable"
 import {
     useNavigate
 } from "react-router-dom";
-// @ts-ignore
-const getConstructorItems = store => store.constructorBurger
-// @ts-ignore
-const getOrderDetails = store => store.orderDetails
-const BurgerConstructor = () => {
-    const login = useSelector(state => state.login.login) || JSON.parse(sessionStorage.getItem('login'))
+import {
+    checkUserAuth
+} from "../../utils/api";
+import {
+    pageRoutes
+} from "../../utils/constants";
+
+const BurgerConstructor:FC = () => {
+    const isUser = checkUserAuth()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {bun, ingredients} = useSelector(getConstructorItems)
-    const {orderId} = useSelector(getOrderDetails)
+    // @ts-ignore
+    const {bun, ingredients} = useSelector(store => store.constructorBurger)
+    // @ts-ignore
+    const {orderId} = useSelector(store => store.orderDetails)
     const [isShowModal, setShowModal] = useState(false)
     const burger = useMemo(
         () => [...ingredients, bun, bun],
@@ -55,18 +60,19 @@ const BurgerConstructor = () => {
         accept: 'item',
         drop: (item) => addIngredient(item)
     }));
-    const modalOpenHandler = (e) => {
-        if (!login) {
-            navigate('/login');
+    const modalOpenHandler = () => {
+        if (!isUser) {
+            navigate(pageRoutes.login);
         }
         if(orderId){
             dispatch({type: RESET_ORDER_DETAILS})
         }
         const idsList = burger.map(el => el._id)
+        //@ts-ignore
         dispatch(getOrderId(idsList))
         setShowModal(true )
     }
-    const modalCloseHandler = (e) => {
+    const modalCloseHandler = () => {
         if(orderId){
             dispatch({type: RESET_INGREDIENT})
         }

@@ -3,13 +3,16 @@ import styles from './not-found.module.css'
 import {
     Link
 } from "react-router-dom";
+import {
+    pageRoutes
+} from "../../utils/constants";
 const NotFound = () => {
     return (
         <main className={styles.main}>
             <div className={styles.inner}>
                 <p className='text text_type_main-large'>Ошибка 404</p>
                 <p className='ext text_type_main-small'>Старница не найдена</p>
-                <Link className={`${styles.link} text text_type_main-default pt-5`} to='/'>Главная страница</Link>
+                <Link className={`${styles.link} text text_type_main-default pt-5`} to={pageRoutes.main}>Главная страница</Link>
             </div>
         </main>
     )

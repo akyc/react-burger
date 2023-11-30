@@ -10,34 +10,38 @@ import {
 import { getLoginUser } from '../../services/actions/login';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './login.module.css'
+import {
+    checkUserAuth
+} from "../../utils/api";
+import {
+    pageRoutes
+} from "../../utils/constants";
 
 
 const Login = () => {
-    const isLogin = JSON.parse(sessionStorage.getItem('login'))
+    //@ts-ignore
     const login = useSelector( state => state.login.login)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
         const user = {
             email,
             password
         }
+        //@ts-ignore
         dispatch(getLoginUser(user))
     }
     useEffect(() => {
         if (login) {
-            navigate('/')
+            navigate(pageRoutes.main)
         }
     }, [login, navigate])
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    if(isLogin){
-        navigate('/profile')
-    }
     return (
         <main className={styles.main}>
             <form className={styles.form} onSubmit={handleSubmit}>
@@ -53,7 +57,7 @@ const Login = () => {
                 <div className='mt-6 mb-6'>
                     <PasswordInput
                         onChange={e => setPassword(e.target.value)}
-                        type='password' placeholder={'Пароль'}
+                        placeholder={'Пароль'}
                         value={password} />
                 </div>
                 <Button
@@ -62,9 +66,9 @@ const Login = () => {
                     size='medium'>Войти</Button>
             </form>
             <p className={`${styles.text} text text_type_main-default mt-20 mb-4`}>Вы - новый пользователь?
-                <Link to='/register' className={`${styles.link} ml-2`}>Зарегистрироваться</Link></p>
+                <Link to={pageRoutes.register} className={`${styles.link} ml-2`}>Зарегистрироваться</Link></p>
             <p className={`${styles.text} text text_type_main-default`}>Забыли пароль?
-                <Link to='/forgot-password' className={`${styles.link} ml-2`}>Восстановить пароль</Link></p>
+                <Link to={pageRoutes.resetPassword} className={`${styles.link} ml-2`}>Восстановить пароль</Link></p>
         </main>
     )
 };

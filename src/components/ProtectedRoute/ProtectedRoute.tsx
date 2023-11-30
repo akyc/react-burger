@@ -1,23 +1,29 @@
-import {
-    FC,
+import React, {
     ReactNode
 } from 'react'
 import { useLocation, Navigate } from 'react-router-dom'
 import {pageRoutes} from "../../utils/constants"
+import {
+    checkUserAuth
+} from "../../utils/api";
 
 interface IProtectedRoute {
     onlyUnAuth: boolean;
-    children: ReactNode
+    children: React.JSX.Element;
 }
-export const ProtectedRoute = ({ onlyUnAuth, children }):IProtectedRoute => {
-    const login = JSON.parse(sessionStorage.getItem('login'));
+export const ProtectedRoute = ({ onlyUnAuth, children}: IProtectedRoute) => {
+    const isUser = checkUserAuth();
     const location = useLocation();
 
-    if(!login){
-        return (
-            <Navigate to={pageRoutes.login} state={{ from: location }} replace />
+    return onlyUnAuth ? (
+        isUser ? (
+            <Navigate to={pageRoutes.main} state={{ previousLocation: location }} replace />
+        ) : (
+            children
         )
-    }
-    return children
+    ) : isUser ? (
+        children
+    ) : (
+        <Navigate to={pageRoutes.login} state={{ previousLocation: location }} replace />
+    );
 }
-

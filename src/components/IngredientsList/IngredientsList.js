@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import {useSelector} from 'react-redux'
 import styles from './IngredientsList.module.css'
-import { ingredientType } from '../../utils/props-types'
+import { ingredientType } from '../../utils/types'
 import Ingredient from "../Ingredient/Ingredient";
 
 const getIngredientDetails = store => store.ingredientDetails

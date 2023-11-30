@@ -9,29 +9,28 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import { getPasswordSuccessThunk } from '../../services/actions/forgot-password'
 
 import styles from './forgot-password.module.css'
+import {
+    pageRoutes
+} from "../../utils/constants";
 
 const ForgotPassword = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    //@ts-ignore
     const success = useSelector(state => state.resetPassword.success)
 
     const [email, setEmail] = useState('')
 
-    const handleClick = useCallback((e) => {
+    const handleClick = useCallback((e: React.SyntheticEvent) => {
         e.preventDefault();
+        //@ts-ignore
         dispatch(getPasswordSuccessThunk(email));
-
     }, [dispatch, email])
 
     useEffect(() => {
-        success ? navigate('/reset-password') : navigate('/forgot-password')
+        success ? navigate(pageRoutes.resetPassword) : navigate(pageRoutes.forgotPassword)
     }, [success, navigate])
-
-    const login = JSON.parse(sessionStorage.getItem('login'));
-    if (login) {
-        return (<Navigate to={'/profile'} />)
-    }
 
     return (
         <main className={styles.main}>
@@ -51,7 +50,7 @@ const ForgotPassword = () => {
                     size='medium'
                 >Восстановить</Button>
                 <p className={`${styles.text} text text_type_main-default mt-20 mb-4`}>Вспомнили пароль?
-                    <Link to='/login' className={`${styles.link} ml-2`}>Войти</Link></p>
+                    <Link to={pageRoutes.login} className={`${styles.link} ml-2`}>Войти</Link></p>
             </form>
         </main>
     )

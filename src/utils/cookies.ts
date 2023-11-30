@@ -1,7 +1,11 @@
-export function setCookie(name, value, options = {}) {
+import {
+    pageRoutes
+} from "./constants";
+
+export function setCookie(name: string, value: string, options: { [key: string]: any } = {}): void {
 
     options = {
-        path: '/',
+        path: pageRoutes.main,
         ...options
     };
 
@@ -22,14 +26,14 @@ export function setCookie(name, value, options = {}) {
     document.cookie = updatedCookie;
 }
 
-export function getCookie(name) {
+export function getCookie(name: string) {
     const matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function deleteCookie(name) {
+export function deleteCookie(name: string) {
     setCookie(name, "", {
         'max-age': -1
     })

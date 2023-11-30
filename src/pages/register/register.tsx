@@ -5,17 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './register.module.css'
 const Register = () => {
+    //@ts-ignore
     const success = useSelector(state => state.user.success);
-    const login = JSON.parse(sessionStorage.getItem('login'));
-
     const dispatch = useDispatch()
-    const handleRegister = (e) => {
+    const handleRegister = (e: React.SyntheticEvent) => {
         e.preventDefault();
         const user = {
             name: value.name,
             email: value.email,
             password: value.password
         };
+        //@ts-ignore
         dispatch(getRegisterUser(user));
     }
 
@@ -24,10 +24,6 @@ const Register = () => {
         email: '',
         password: ''
     });
-
-    if (login) {
-        return (<Navigate to={'/profile'}/>)
-    }
 
     return (
         <main className={styles.main}>
@@ -51,7 +47,7 @@ const Register = () => {
                     <PasswordInput
                         onChange={e => setValue({ ...value, password: e.target.value })}
                         value={value.password}
-                        type='password' placeholder={'Пароль'} icon={'ShowIcon'} />
+                        placeholder={'Пароль'} icon={'ShowIcon'} />
                 </div>
                 <Button
                     htmlType='submit'

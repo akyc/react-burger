@@ -7,5 +7,6 @@ export enum pageRoutes {
     resetPassword = '/reset-password',
     ingredients = 'ingredients/',
     ingredientsId = 'ingredients/:id',
+    orders = '/orders',
     notFound = '*',
 }

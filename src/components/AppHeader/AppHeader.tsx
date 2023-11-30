@@ -15,13 +15,12 @@ import {
 import {
     pageRoutes
 } from '../../utils/constants'
+import {
+    checkUserAuth
+} from "../../utils/api";
 
 const AppHeader: FC = () => {
-    const sessionStorageLogin: string | null = sessionStorage.getItem('login')
-    let login : string | null = null
-    if(sessionStorageLogin) {
-        login = JSON.parse(sessionStorageLogin);
-    }
+    const isUser = checkUserAuth()
 
     return (
         <header className={`${styles.header} pt-4 pb-4`}>
@@ -38,7 +37,7 @@ const AppHeader: FC = () => {
                     <Logo />
                 </div>
                 <div className={styles.profile}>
-                    <NavLink to={login ? { pathname: pageRoutes.profile } : { pathname: pageRoutes.login }}
+                    <NavLink to={isUser ? { pathname: pageRoutes.profile } : { pathname: pageRoutes.login }}
                              className={`${styles.button} text text_type_main-default p-5`}
                     >
                         {({isActive}) => (

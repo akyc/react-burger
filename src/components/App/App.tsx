@@ -64,7 +64,7 @@ const App: FC = () => {
         {ingredientsRequest && 'Загрузка...'}
         {
           ingredientsError &&
-          <Modal header='Ошибка'>
+          <Modal header='Ошибка' onClose={modalCloseHandler}>
             <p className='text text_type_main-medium pt-20 pb-4'>Код ошибки: {ingredientsRequestError}</p>
             <p className='text text_type_main-default pt-20 pb-10'>Попробуйте перезагрузить страницу или вернуться позже</p>
           </Modal>
@@ -82,12 +82,28 @@ const App: FC = () => {
                       </main>
                   }/>
                   <Route path={pageRoutes.ingredientsId} element={<IngredientDetails/>} />
-                  <Route path={pageRoutes.login} element={<Login />} />
-                  <Route path={pageRoutes.register} element={<Register />} />
-                  <Route path={pageRoutes.forgotPassword} element={<ForgotPassword />} />
-                  <Route path={pageRoutes.resetPassword} element={<ResetPassword />} />
+                  <Route path={pageRoutes.login} element={
+                      <ProtectedRoute onlyUnAuth>
+                          <Login />
+                      </ProtectedRoute>
+                  } />
+                  <Route path={pageRoutes.register} element={
+                      <ProtectedRoute onlyUnAuth>
+                        <Register />
+                      </ProtectedRoute>
+                  } />
+                  <Route path={pageRoutes.forgotPassword} element={
+                      <ProtectedRoute onlyUnAuth>
+                          <ForgotPassword />
+                      </ProtectedRoute>
+                  } />
+                  <Route path={pageRoutes.resetPassword} element={
+                      <ProtectedRoute onlyUnAuth>
+                      <ResetPassword />
+                      </ProtectedRoute>
+                  } />
                   <Route path={pageRoutes.profile} element={
-                      <ProtectedRoute>
+                      <ProtectedRoute onlyUnAuth={false}>
                           <Profile/>
                       </ProtectedRoute>
                   } />

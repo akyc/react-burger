@@ -1,5 +1,9 @@
 import API from '../../utils/api'
-import { getCookie, setCookie } from '../../utils/cookies'
+import {
+    deleteCookie,
+    getCookie,
+    setCookie
+} from '../../utils/cookies'
 
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
@@ -28,7 +32,11 @@ export const logoutUserThunk = () => {
             .then((data) => {
                 const { success } = data;
                 if (success) {
+                    sessionStorage
+                        .removeItem('login');
                     dispatch({ type: LOGOUT_USER, data });
+                    deleteCookie('access')
+                    deleteCookie('refresh')
                 }
             })
             .catch(console.warn)
