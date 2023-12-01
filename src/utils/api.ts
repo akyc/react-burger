@@ -1,15 +1,31 @@
+import {
+    IIngredient,
+    TUserInfo
+} from "./types";
 
 const PATH = "https://norma.nomoreparties.space/api"
 
-const checkResponse = (res) => {
+type TServerResponse<T> = {
+    success: boolean
+} & T;
+
+type TRefreshResponse = TServerResponse<{
+    refreshToken: string;
+    accessToken: string;
+}>;
+
+type TIngredientsResponse = TServerResponse<{
+    data: IIngredient[]
+}>
+const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : Promise.reject(res);
 };
 
 const API = {
-    getIngredientsRequest() {
-        return fetch(`${PATH}/ingredients`).then(res => checkResponse(res))
+    getIngredientsRequest(): Promise<TIngredientsResponse> {
+        return fetch(`${PATH}/ingredients`).then(res => checkResponse<TIngredientsResponse>(res))
     },
-    storeOrder(ingredients){
+    storeOrder(ingredients: Array<string>){
         return fetch(`${PATH}/orders`, {
             method: 'POST',
             headers: {
@@ -18,7 +34,7 @@ const API = {
             body: JSON.stringify({ingredients})
             }).then(res => checkResponse(res))
     },
-    loginUserRequest(user) {
+    loginUserRequest(user: TUserInfo) {
         const { email, password } = user;
         return fetch(`${PATH}/auth/login`, {
             method: 'POST',
@@ -28,7 +44,7 @@ const API = {
               password
             })}).then(res => checkResponse(res))
     },
-    logoutUserRequest(token) {
+    logoutUserRequest(token: string) {
         return fetch(`${PATH}/auth/logout`, {
             method: 'POST',
             headers: {
@@ -39,14 +55,14 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getUserInfo(access) {
+    getUserInfo(access: string) {
         return fetch(`${PATH}/auth/user`, {
             headers: {
                 authorization: 'Bearer ' + access,
                 'Content-Type': 'application/json'
             }}).then(res => checkResponse(res))
     },
-    patchUserInfo(user, access) {
+    patchUserInfo(user: TUserInfo, access: string) {
         const {email, name, password} = user
         return fetch(`${PATH}/auth/user`, {
             method: 'PATCH',
@@ -61,7 +77,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getRegisterRequest(user) {
+    getRegisterRequest(user: TUserInfo) {
         const { email, password, name } = user;
         return fetch(`${PATH}/auth/register`, {
             method: 'POST',
@@ -73,7 +89,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getPasswordResetRequest(email){
+    getPasswordResetRequest(email: string){
         return fetch(`${PATH}/password-reset`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -82,7 +98,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getPasswordRecoverRequest(password, token){
+    getPasswordRecoverRequest(password: string, token: string){
         return fetch(`${PATH}/password-reset/reset`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -92,8 +108,8 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    refreshToken(token){
-        fetch(`${PATH}/auth/token`, {
+    refreshToken(token: string): Promise<TRefreshResponse>{
+        return fetch(`${PATH}/auth/token`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -101,8 +117,16 @@ const API = {
             body: JSON.stringify({
                 token
             })
-        }).then(res => checkResponse(res)).catch(console.warn)
+        }).then(res => checkResponse<TRefreshResponse>(res))
     }
 }
 
+export const checkUserAuth = ():boolean => {
+    const sessionStorageLogin = sessionStorage.getItem('login')
+    let login : boolean = false
+    if(sessionStorageLogin) {
+        login = JSON.parse(sessionStorageLogin);
+    }
+    return Boolean(login)
+}
 export default API

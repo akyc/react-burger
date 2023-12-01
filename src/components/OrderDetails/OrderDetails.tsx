@@ -2,10 +2,9 @@ import React from 'react'
 import done from '../../images/done.png'
 import { useSelector } from "react-redux"
 
-const getOrderDetails = store => store.orderDetails
-
 const OrderDetails = () => {
-    const {orderId} = useSelector(getOrderDetails)
+    //@ts-ignore
+    const {orderId} = useSelector(store => store.orderDetails)
     return (
         <>
             <p className='text text_type_digits-large pb-8 text-center'>{orderId}</p>

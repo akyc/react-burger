@@ -10,30 +10,30 @@ import {
 } from 'react-redux'
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './reset-password.module.css'
+import {
+    pageRoutes
+} from "../../utils/constants";
 const ResetPassword = () => {
+    //@ts-ignore
     const reset = useSelector(state => state.resetPassword.success)
+    //@ts-ignore
     const recovered = useSelector(state => state.recoverPassword.success)
     const dispatch = useDispatch()
     const [password, setPassword] = useState('')
     const [token, setToken] = useState('')
 
-    const handleClick = useCallback((e) => {
+    const handleClick = useCallback((e: React.SyntheticEvent) => {
         e.preventDefault();
+        //@ts-ignore
         dispatch(getPasswordRecoverThunk(password, token));
     }, [dispatch, password, token])
 
-
-    const login = JSON.parse(sessionStorage.getItem('login'));
-    if (login) {
-        return (<Navigate to={'/profile'} />)
-    }
-
     if (!reset) {
-       return (<Navigate to={'/forgot-password'} />)
+       return (<Navigate to={pageRoutes.forgotPassword} />)
     }
 
     if (recovered) {
-       return (<Navigate to={'/login'} />)
+       return (<Navigate to={pageRoutes.login} />)
     }
 
     return (
@@ -43,7 +43,7 @@ const ResetPassword = () => {
                 <div className='mt-6'>
                     <PasswordInput
                         onChange={e => setPassword(e.target.value)}
-                        type='password' placeholder={'Пароль'}
+                        placeholder={'Пароль'}
                         value={password} />
                 </div>
                 <div className='mt-6 mb-6'>
@@ -60,7 +60,7 @@ const ResetPassword = () => {
                     type='primary'
                     size='medium'>Сохранить</Button>
                 <p className={`${styles.text} text text_type_main-default mt-20 mb-4`}>Вспомнили пароль?
-                    <Link to='/login' className={`${styles.link} ml-2`}>Войти</Link></p>
+                    <Link to={pageRoutes.login} className={`${styles.link} ml-2`}>Войти</Link></p>
             </form>
         </main >
     )

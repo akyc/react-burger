@@ -1,4 +1,6 @@
-import React from "react"
+import React, {
+    FC
+} from "react"
 import { useDrag } from 'react-dnd'
 import styles from '../IngredientsList/IngredientsList.module.css'
 import {
@@ -12,9 +14,15 @@ import {
     Link,
     useLocation
 } from "react-router-dom";
+import {IIngredient} from "../../utils/types";
+import {pageRoutes} from "../../utils/constants";
 
-const Ingredient = ({item}) => {
+interface IIngredientOne {
+    item: IIngredient;
+}
+const Ingredient: FC<IIngredientOne>= ({item}) => {
     const { _id, name, price, image_mobile, image_large, image } = item
+    //@ts-ignore
     const {ingredients, bun} = useSelector(store => store.constructorBurger)
     const amount = [...ingredients, bun, bun].filter( el => el?._id === _id).length
     const [, drag] = useDrag(() => ({
@@ -24,7 +32,7 @@ const Ingredient = ({item}) => {
     const location = useLocation();
 
     return (
-        <Link className={`${styles.item}`} ref={drag} to={`/ingredients/${_id}`} state={{background: location }}>
+        <Link className={`${styles.item}`} ref={drag} to={`${pageRoutes.ingredients}${_id}`} state={{background: location }}>
              <picture className='pl-4 pr-4 pb-4'>
                  <source media='(min-width: 1024px)' src={image_large} />
                  <source media='(max-width: 768px)' src={image_mobile} />

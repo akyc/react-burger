@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, FC } from 'react'
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../Modal/Modal'
 import styles from './BurgerConstructor.module.css'
@@ -20,17 +20,27 @@ import IngredientDraggable from "../IngredientDraggable/IngredientDraggable"
 import {
     useNavigate
 } from "react-router-dom";
+import {
+    checkUserAuth
+} from "../../utils/api";
+import {
+    pageRoutes
+} from "../../utils/constants";
+import {
+    IIngredient,
+    IIngredientId
+} from "../../utils/types";
 
-const getConstructorItems = store => store.constructorBurger
-const getOrderDetails = store => store.orderDetails
-const BurgerConstructor = () => {
-    const login = useSelector(state => state.login.login) || JSON.parse(sessionStorage.getItem('login'))
+const BurgerConstructor:FC = () => {
+    const isUser = checkUserAuth()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {bun, ingredients} = useSelector(getConstructorItems)
-    const {orderId} = useSelector(getOrderDetails)
+    // @ts-ignore
+    const {bun, ingredients} = useSelector(store => store.constructorBurger)
+    // @ts-ignore
+    const {orderId} = useSelector(store => store.orderDetails)
     const [isShowModal, setShowModal] = useState(false)
-    const burger = useMemo(
+    const burger: IIngredient[] = useMemo(
         () => [...ingredients, bun, bun],
         [ingredients, bun]
     )
@@ -38,40 +48,44 @@ const BurgerConstructor = () => {
         () => ingredients.length && bun ? burger.reduce((a,c) => a + c.price, 0) : 0,
         [ingredients, bun, burger]
     )
-    const addIngredient = ingredient => {
+    const addIngredient = (ingredient: IIngredient ) => {
         ingredient = {
             ...ingredient,
             uid: nanoid(),
         }
         if(ingredient.type === 'bun'){
+            //@ts-ignore
             dispatch({type: ADD_BUN, item: ingredient})
         } else {
+            //@ts-ignore
             dispatch({type: ADD_INGREDIENT, item: ingredient})
         }
-
     }
     const [, drop] = useDrop(() => ({
         accept: 'item',
-        drop: (item) => addIngredient(item)
+        drop: (item: IIngredient) => addIngredient(item)
     }));
-    const modalOpenHandler = (e) => {
-        if (!login) {
-            navigate('/login');
+    const modalOpenHandler = () => {
+        if (!isUser) {
+            navigate(pageRoutes.login);
         }
         if(orderId){
+            //@ts-ignore
             dispatch({type: RESET_ORDER_DETAILS})
         }
         const idsList = burger.map(el => el._id)
+        //@ts-ignore
         dispatch(getOrderId(idsList))
         setShowModal(true )
     }
-    const modalCloseHandler = (e) => {
+    const modalCloseHandler = () => {
         if(orderId){
             dispatch({type: RESET_INGREDIENT})
         }
         setShowModal(false )
     }
-    const deleteIngredient = (item) => {
+    const deleteIngredient = (item: IIngredient) => {
+        //@ts-ignore
         dispatch({type: DELETE_INGREDIENT, item})
     };
 
@@ -89,7 +103,7 @@ const BurgerConstructor = () => {
                 }
             </div>
             <div className={`${styles.fillings} d-flex`}>
-                {ingredients && ingredients.map((item,i) => <IngredientDraggable key={item.uid} index={i} item={item} id={item.uid} deleteIngredient={deleteIngredient}/>)}
+                {ingredients && ingredients.map((item: IIngredient ,i: number) => <IngredientDraggable key={item.uid} index={i} item={item} id={item.uid} deleteIngredient={deleteIngredient}/>)}
             </div>
             <div className={`${styles.blockedElement} d-flex pt-3 pl-8`}>
                 {bun &&

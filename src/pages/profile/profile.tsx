@@ -13,12 +13,20 @@ import {
     deleteCookie,
     getCookie
 } from "../../utils/cookies";
+import {
+    checkUserAuth
+} from "../../utils/api";
+import {
+    pageRoutes
+} from "../../utils/constants";
 
 const Profile = () => {
     const dispatch = useDispatch();
+    //@ts-ignore
     const currentName = useSelector(state => state.info.user.name);
+    //@ts-ignore
     const currentEmail = useSelector(state => state.info.user.email);
-    const login = JSON.parse(sessionStorage.getItem('login'));
+    const isUser = checkUserAuth();
 
     const [value, setValue] = useState({
         name: currentName,
@@ -36,10 +44,10 @@ const Profile = () => {
         })
     }, [currentEmail, currentName])
 
-
-    const saveInfo = (e) => {
+    const saveInfo = (e:React.SyntheticEvent) => {
         e.preventDefault();
         const access = getCookie('access')
+        //@ts-ignore
         dispatch(patchUserInfoThunk(value, access));
         setValue({
             name: currentName,
@@ -57,41 +65,39 @@ const Profile = () => {
     }
 
     const logoutUser = useCallback(() => {
+        //@ts-ignore
         dispatch(logoutUserThunk());
-        sessionStorage.setItem('login', JSON.stringify(false));
-        deleteCookie('access')
-        deleteCookie('refresh')
     }, [dispatch])
 
     const options = {
         name: 'name',
         error: false,
         errorText: 'Ошибка',
-        size: 'default',
         extraClass: 'ml-1'
     }
 
     useEffect(() => {
-        if (login) {
+        if (isUser) {
+            //@ts-ignore
             dispatch(getUserInfoThunk());
         }
-    }, [dispatch, login])
+    }, [dispatch, isUser])
 
     return (
         <main className={styles.main}>
             <nav className={`${styles.nav} mr-15`}>
                 <NavLink
-                    to={'/profile'}
+                    to={pageRoutes.profile}
                     className={({isActive}) => `${isActive ? styles.active : ''} ${styles.tab}`}>
                     <h3 className='text text_type_main-medium mt-4 mb-8'>Профиль</h3>
                 </NavLink>
                 <NavLink
-                    to={'/profile/orders'}
+                    to={pageRoutes.orders}
                     className={({isActive}) => `${isActive ? styles.active : ''} ${styles.tab}`}>
                     <h3 className='text text_type_main-medium mb-8'>История заказов</h3>
                 </NavLink>
                 <NavLink
-                    to={'/login'}
+                    to={pageRoutes.main}
                     className={({isActive}) => `${isActive ? styles.active : ''} ${styles.tab}`}>
                     <h3 onClick={logoutUser} className='text text_type_main-medium mb-4'>Выход</h3>
                 </NavLink>

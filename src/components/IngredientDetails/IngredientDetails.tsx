@@ -2,14 +2,16 @@ import React from 'react'
 import {useSelector} from "react-redux"
 import styles from './IngredientDetails.module.css'
 import { useParams } from "react-router-dom";
-
-const getIngredients = store => store.ingredients.ingredientsItems
+import {
+    IIngredient
+} from "../../utils/types";
 
 const IngredientDetails = () => {
     let { id } = useParams();
-    const ingredients = useSelector(getIngredients)
+    //@ts-ignore
+    const ingredients = useSelector(store => store.ingredients.ingredientsItems)
     if(ingredients.length){
-        const ingredient = ingredients.find(el => el._id === id)
+        const ingredient:IIngredient = ingredients.find((el:IIngredient) => el._id === id)
         if(ingredient){
             const { name, image_mobile, image_large, proteins, fat, calories, carbohydrates } = ingredient
             const nutrients = [
@@ -43,6 +45,7 @@ const IngredientDetails = () => {
             )
         }
     }
+    return (null)
 }
 
 export default IngredientDetails

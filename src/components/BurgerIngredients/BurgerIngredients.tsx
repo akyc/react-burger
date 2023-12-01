@@ -5,14 +5,18 @@ import styles from './BurgerIngredients.module.css'
 import { useSelector, useDispatch } from "react-redux"
 import { useInView } from "react-intersection-observer"
 import { SELECT_TABS } from "../../services/actions/tabs"
-
+import {
+    IIngredient
+} from "../../utils/types";
+//@ts-ignore
 const getIngredients = store => store.ingredients
+//@ts-ignore
 const getCurrentTab = store => store.tabs.select
 const BurgerIngredients = () => {
     const { ingredientsItems, ingredientGroups } = useSelector(getIngredients)
     const current = useSelector(getCurrentTab)
     const dispatch = useDispatch()
-    const setCurrent = (current) => {
+    const setCurrent = (current:string) => {
         dispatch({type: SELECT_TABS, select: current})
     }
 
@@ -36,17 +40,17 @@ const BurgerIngredients = () => {
     }, [inViewBuns, inViewSauces, inViewMains]);
 
     const buns = useMemo(
-        () => ingredientsItems.filter((item) => item.type === "bun"),
+        ():IIngredient[] => ingredientsItems.filter((item:IIngredient) => item.type === "bun"),
         [ingredientsItems]
     );
 
     const sauces = useMemo(
-        () => ingredientsItems.filter((item) => item.type === "sauce"),
+        ():IIngredient[] => ingredientsItems.filter((item:IIngredient) => item.type === "sauce"),
         [ingredientsItems]
     );
 
     const mains = useMemo(
-        () => ingredientsItems.filter((item) => item.type === "main"),
+        ():IIngredient[] => ingredientsItems.filter((item:IIngredient) => item.type === "main"),
         [ingredientsItems]
     );
     return (
@@ -55,7 +59,7 @@ const BurgerIngredients = () => {
                 Соберите бургер
             </p>
             <div className={`${styles.tabsContainer} pb-10`}>
-                {ingredientGroups.map(({ name, title }, i) => {
+                {ingredientGroups.map(({ name, title }: {[key: string]: string}, i: number) => {
                     return (
                         <Tab value={name} active={current === name} onClick={setCurrent} key={i}>
                             {title}
