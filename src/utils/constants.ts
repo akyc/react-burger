@@ -3,10 +3,13 @@ export enum pageRoutes {
     register = '/register',
     login = '/login',
     profile = '/profile',
+    orderId = '/profile/orders/:id',
     forgotPassword = '/forgot-password',
     resetPassword = '/reset-password',
     ingredients = '/ingredients/',
     ingredientsId = 'ingredients/:id',
     orders = '/orders',
+    feed = '/feed/',
+    feedId = '/feed/:id',
     notFound = '*',
 }

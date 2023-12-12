@@ -34,6 +34,8 @@ import IngredientDetails
     from "../IngredientDetails/IngredientDetails";
 
 import {Location} from "react-router-dom";
+import Feed
+    from "../../pages/feed/feed";
 
 // @ts-ignore
 const getIngredientsItems = store => store.ingredients
@@ -107,6 +109,7 @@ const App: FC = () => {
                           <Profile/>
                       </ProtectedRoute>
                   } />
+                  <Route path={pageRoutes.feed} element={<Feed/>}/>
                   <Route path={pageRoutes.notFound} element={<NotFound />} />
                 </Routes>
                 {background && (

@@ -29,8 +29,13 @@ const AppHeader: FC = () => {
                     <NavLink to={pageRoutes.main} className={`${styles.button} ${styles.active} text text_type_main-default p-5`}>
                         <BurgerIcon type='primary' /> Конструктор
                     </NavLink>
-                    <NavLink to={pageRoutes.main} className={`${styles.button} text text_type_main-default p-5`}>
-                        <ListIcon type='secondary' /> Лента заказов
+                    <NavLink to={pageRoutes.feed} className={`${styles.button} text text_type_main-default p-5`}>
+                        {({isActive}) => (
+                            <>
+                                <ListIcon type={isActive ? 'primary' : 'secondary'} />
+                                <span className={isActive ? `${styles.active}` : ''}>Лента заказов</span>
+                            </>
+                        )}
                     </NavLink>
                 </div>
                 <div className={styles.logotype}>
