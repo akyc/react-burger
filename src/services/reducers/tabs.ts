@@ -7,9 +7,8 @@ type TInitialState = {
     select: string
 }
 
-
 const initialState: TInitialState = {
-    select: 'bun',
+    select: 'bun'
 }
 
 export const selectTabsReducer = (state : TInitialState = initialState, action : TUnionAction) : TInitialState => {

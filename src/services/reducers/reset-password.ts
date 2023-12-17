@@ -4,7 +4,7 @@ import {
 } from "../actions";
 
 type TInitState = {
-    success: boolean
+    success: boolean;
 }
 
 const initialState : TInitState = {
