@@ -3,7 +3,7 @@ import React, {
     useCallback,
     useEffect
 } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { getPasswordSuccessThunk } from '../../services/actions/forgot-password'

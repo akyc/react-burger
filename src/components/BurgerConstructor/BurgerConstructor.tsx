@@ -55,10 +55,10 @@ const BurgerConstructor:FC = () => {
         }
         if(ingredient.type === 'bun'){
             //@ts-ignore
-            dispatch({type: ADD_BUN, item: ingredient})
+            dispatch({type: ADD_BUN, payload: ingredient})
         } else {
             //@ts-ignore
-            dispatch({type: ADD_INGREDIENT, item: ingredient})
+            dispatch({type: ADD_INGREDIENT, payload: ingredient})
         }
     }
     const [, drop] = useDrop(() => ({

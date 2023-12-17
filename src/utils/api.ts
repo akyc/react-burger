@@ -25,7 +25,7 @@ const API = {
     getIngredientsRequest(): Promise<TIngredientsResponse> {
         return fetch(`${PATH}/ingredients`).then(res => checkResponse<TIngredientsResponse>(res))
     },
-    storeOrder(ingredients: Array<string>){
+    storeOrder(ingredients: Array<string>) : Promise<any>{
         return fetch(`${PATH}/orders`, {
             method: 'POST',
             headers: {
@@ -34,7 +34,7 @@ const API = {
             body: JSON.stringify({ingredients})
             }).then(res => checkResponse(res))
     },
-    loginUserRequest(user: TUserInfo) {
+    loginUserRequest(user: TUserInfo): Promise<any> {
         const { email, password } = user;
         return fetch(`${PATH}/auth/login`, {
             method: 'POST',
@@ -44,7 +44,7 @@ const API = {
               password
             })}).then(res => checkResponse(res))
     },
-    logoutUserRequest(token: string) {
+    logoutUserRequest(token: string | undefined): Promise<any> {
         return fetch(`${PATH}/auth/logout`, {
             method: 'POST',
             headers: {
@@ -55,14 +55,14 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getUserInfo(access: string) {
+    getUserInfo(access: string | undefined) : Promise<any> {
         return fetch(`${PATH}/auth/user`, {
             headers: {
                 authorization: 'Bearer ' + access,
                 'Content-Type': 'application/json'
             }}).then(res => checkResponse(res))
     },
-    patchUserInfo(user: TUserInfo, access: string) {
+    patchUserInfo(user: TUserInfo, access: string) : Promise<any> {
         const {email, name, password} = user
         return fetch(`${PATH}/auth/user`, {
             method: 'PATCH',
@@ -77,7 +77,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getRegisterRequest(user: TUserInfo) {
+    getRegisterRequest(user: TUserInfo) : Promise<any> {
         const { email, password, name } = user;
         return fetch(`${PATH}/auth/register`, {
             method: 'POST',
@@ -89,7 +89,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getPasswordResetRequest(email: string){
+    getPasswordResetRequest(email: string) : Promise<any> {
         return fetch(`${PATH}/password-reset`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -98,7 +98,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getPasswordRecoverRequest(password: string, token: string){
+    getPasswordRecoverRequest(password: string, token: string) : Promise<any> {
         return fetch(`${PATH}/password-reset/reset`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

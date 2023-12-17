@@ -1,3 +1,8 @@
+import { store } from '../services/store'
+import { ActionCreator } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { TUnionAction} from "../services/actions";
+
 export interface IIngredientId {
     _id: string;
 }
@@ -30,4 +35,8 @@ export interface IOrder {
     };
     success: boolean;
 }
-
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export type AppThunk<ReturnType = void> = ActionCreator<
+    ThunkAction<ReturnType, RootState, never, TUnionAction>
+>;

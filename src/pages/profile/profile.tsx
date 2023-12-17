@@ -10,7 +10,6 @@ import { logoutUserThunk } from '../../services/actions/login'
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './profile.module.css'
 import {
-    deleteCookie,
     getCookie
 } from "../../utils/cookies";
 import {

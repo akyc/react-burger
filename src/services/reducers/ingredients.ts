@@ -1,6 +1,20 @@
 import {GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_ERROR, GET_INGREDIENTS_SUCCESS} from "../actions/ingredients";
+import {
+    IIngredient
+} from "../../utils/types";
+import {
+    TUnionAction
+} from "../actions";
 
-const initialState = {
+type TInitialState = {
+    ingredientsItems: IIngredient[];
+    ingredientsRequest: boolean,
+    ingredientsError: boolean,
+    ingredientsRequestError: string | null,
+    ingredientGroups: {['name'] : 'bun' | 'sauce' | 'main', ['title'] : 'Булки' | 'Соусы' | 'Начинки'}[]
+}
+
+const initialState : TInitialState = {
     ingredientsItems: [],
     ingredientsRequest: false,
     ingredientsError: false,
@@ -11,7 +25,7 @@ const initialState = {
         { name: 'main', title: 'Начинки' }
     ]
 }
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state = initialState, action: TUnionAction) => {
     switch(action.type){
         case GET_INGREDIENTS_REQUEST:
             return {
@@ -24,14 +38,14 @@ export const ingredientsReducer = (state = initialState, action) => {
                 ingredientsError: false,
                 ingredientsRequest: false,
                 ingredientsRequestError: null,
-                ingredientsItems: [...action.items]
+                ingredientsItems: [...action.payload]
             }
         case GET_INGREDIENTS_ERROR:
             return {
                 ...initialState,
                 ingredientsRequest: false,
                 ingredientsError: true,
-                ingredientsRequestError: action.error
+                ingredientsRequestError: action.payload
             }
         default:
             return state

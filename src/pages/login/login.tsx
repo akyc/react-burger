@@ -11,9 +11,6 @@ import { getLoginUser } from '../../services/actions/login';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './login.module.css'
 import {
-    checkUserAuth
-} from "../../utils/api";
-import {
     pageRoutes
 } from "../../utils/constants";
 

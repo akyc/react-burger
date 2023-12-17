@@ -4,14 +4,25 @@ import {
     GET_ORDER_DETAILS_ERROR,
     RESET_ORDER_DETAILS
 } from "../actions/orderDetails";
-const initialState = {
+import {
+    TUnionAction
+} from "../actions";
+
+type TInitialState = {
+    orderId: null | string,
+    orderRequestError: null | string,
+    orderError: boolean,
+    orderRequest: boolean,
+}
+
+const initialState : TInitialState = {
     orderId: null,
     orderRequestError: null,
     orderError: false,
     orderRequest: false,
 
 }
-export function orderDetailsReducer(state=initialState, action){
+export function orderDetailsReducer(state : TInitialState = initialState, action: TUnionAction) : TInitialState {
     switch(action.type){
         case GET_ORDER_DETAILS_REQUEST:
             return {
@@ -24,14 +35,14 @@ export function orderDetailsReducer(state=initialState, action){
                 orderRequest: false,
                 orderRequestError: null,
                 orderError: false,
-                orderId: action.id
+                orderId: action.payload
             }
         case GET_ORDER_DETAILS_ERROR:
             return {
                 ...initialState,
                 orderRequest: false,
                 orderError: true,
-                orderRequestError: action.error
+                orderRequestError: action.payload
             }
         case RESET_ORDER_DETAILS:
             return {
