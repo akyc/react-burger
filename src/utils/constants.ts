@@ -1,3 +1,11 @@
+import {
+    TypedUseSelectorHook,
+    useDispatch as dispatchHook,
+    useSelector as selectorHook
+} from 'react-redux';
+import { RootState } from './types';
+import { ThunkDispatch } from 'redux-thunk';
+import { TUnionAction } from '../services/actions';
 export enum pageRoutes {
     main = '/',
     register = '/register',
@@ -13,3 +21,7 @@ export enum pageRoutes {
     feedId = '/feed/:id',
     notFound = '*',
 }
+
+export const useDispatch = dispatchHook<ThunkDispatch<RootState, never, TUnionAction>>;
+
+export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;

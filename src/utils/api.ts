@@ -3,7 +3,11 @@ import {
     TUserInfo
 } from "./types";
 
-const PATH = "https://norma.nomoreparties.space/api"
+const PATH: string = "https://norma.nomoreparties.space/api"
+
+export const wsOrdersUrl: string = `wss://norma.nomoreparties.space/orders`;
+export const wsAllOrdersUrl: string = 'wss://norma.nomoreparties.space/orders/all';
+
 
 type TServerResponse<T> = {
     success: boolean
@@ -129,4 +133,40 @@ export const checkUserAuth = ():boolean => {
     }
     return Boolean(login)
 }
+
+export const filterIngredients = (arr: string[], data: IIngredient[]) => arr.map(item => {
+    return data.filter(i => i._id === item);
+}).reduce((acc, item) => {
+    return acc.concat(item)
+})
+
+export const calculatePrice = (arr: string[], data: IIngredient[]) => {
+    return filterIngredients(arr, data).reduce((acc, item) => acc + item.price, 0)
+}
+
+export const includesIngredients = (data: IIngredient[], arr: string[]) => {
+    return data.filter((item) => arr.includes(item._id));
+}
+
+export type TOptions = {
+    month: 'long',
+    day: 'numeric',
+    timezone: 'Moscow',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZoneName: "short",
+}
+export const getOrderDate = (date: string) => {
+    const options: TOptions = {
+        month: 'long',
+        day: 'numeric',
+        timezone: 'Moscow',
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZoneName: "short",
+    };
+
+    return new Date(Date.parse(date)).toLocaleString("ru", options)
+}
+
 export default API

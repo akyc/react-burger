@@ -28,6 +28,14 @@ import {
 import {
     TTabsAction
 } from "./tabs";
+import {
+    IWsActions,
+    TWsActions
+} from "./socket";
+import {
+    IUserWsActions,
+    TUserWsActions
+} from "./user-socket";
 
 
 
@@ -42,3 +50,10 @@ export type TUnionAction =
     | TResetPasswordSuccessAction
     | TTabsAction
     | TUserAction
+    | TWsActions
+    | TUserWsActions
+
+
+export type TMiddlewareActions =
+    | IWsActions
+    | IUserWsActions

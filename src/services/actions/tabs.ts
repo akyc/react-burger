@@ -5,7 +5,6 @@ export interface ISelectTab{
     readonly payload : string
 }
 
-
 export type TTabsAction = ISelectTab
 
 export const selectTab = (payload: string): ISelectTab => ({
