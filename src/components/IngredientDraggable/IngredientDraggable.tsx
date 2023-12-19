@@ -11,9 +11,9 @@ import styles from "../BurgerConstructor/BurgerConstructor.module.css";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
     useDispatch
-} from "react-redux";
+} from "../../utils/constants";
 import {
-    MOVE_INGREDIENT
+    moveIngredient
 } from "../../services/actions/constructor";
 import {
     IIngredient
@@ -66,7 +66,7 @@ const IngredientDraggable: FC<IIngredientDraggable> = ({item, index, id, deleteI
             if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
                 return
             }
-            dispatch({type: MOVE_INGREDIENT, dragIndex, hoverIndex})
+            dispatch(moveIngredient(dragIndex, hoverIndex))
             item.index = hoverIndex
         }
     }))

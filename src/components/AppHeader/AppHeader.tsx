@@ -10,6 +10,7 @@ import {
 import styles
     from './AppHeader.module.css'
 import {
+    Link,
     NavLink
 } from 'react-router-dom'
 import {
@@ -29,12 +30,19 @@ const AppHeader: FC = () => {
                     <NavLink to={pageRoutes.main} className={`${styles.button} ${styles.active} text text_type_main-default p-5`}>
                         <BurgerIcon type='primary' /> Конструктор
                     </NavLink>
-                    <NavLink to={pageRoutes.main} className={`${styles.button} text text_type_main-default p-5`}>
-                        <ListIcon type='secondary' /> Лента заказов
+                    <NavLink to={pageRoutes.feed} className={`${styles.button} text text_type_main-default p-5`}>
+                        {({isActive}) => (
+                            <>
+                                <ListIcon type={isActive ? 'primary' : 'secondary'} />
+                                <span className={isActive ? `${styles.active}` : ''}>Лента заказов</span>
+                            </>
+                        )}
                     </NavLink>
                 </div>
                 <div className={styles.logotype}>
-                    <Logo />
+                    <Link to={pageRoutes.main}>
+                        <Logo />
+                    </Link>
                 </div>
                 <div className={styles.profile}>
                     <NavLink to={isUser ? { pathname: pageRoutes.profile } : { pathname: pageRoutes.login }}

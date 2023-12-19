@@ -5,6 +5,10 @@ import {
 
 const PATH = "https://norma.nomoreparties.space/api"
 
+export const wsOrdersUrl = `wss://norma.nomoreparties.space/orders`;
+export const wsAllOrdersUrl = 'wss://norma.nomoreparties.space/orders/all';
+
+
 type TServerResponse<T> = {
     success: boolean
 } & T;
@@ -25,16 +29,17 @@ const API = {
     getIngredientsRequest(): Promise<TIngredientsResponse> {
         return fetch(`${PATH}/ingredients`).then(res => checkResponse<TIngredientsResponse>(res))
     },
-    storeOrder(ingredients: Array<string>){
+    storeOrder(ingredients: Array<string>, access: string) : Promise<any>{
         return fetch(`${PATH}/orders`, {
             method: 'POST',
             headers: {
+                Authorization: 'Bearer ' + access,
                 "Content-Type": "application/json;charset=utf-8",
             },
             body: JSON.stringify({ingredients})
             }).then(res => checkResponse(res))
     },
-    loginUserRequest(user: TUserInfo) {
+    loginUserRequest(user: TUserInfo): Promise<any> {
         const { email, password } = user;
         return fetch(`${PATH}/auth/login`, {
             method: 'POST',
@@ -44,7 +49,7 @@ const API = {
               password
             })}).then(res => checkResponse(res))
     },
-    logoutUserRequest(token: string) {
+    logoutUserRequest(token: string | undefined): Promise<any> {
         return fetch(`${PATH}/auth/logout`, {
             method: 'POST',
             headers: {
@@ -55,19 +60,19 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getUserInfo(access: string) {
+    getUserInfo(access: string | undefined) : Promise<any> {
         return fetch(`${PATH}/auth/user`, {
             headers: {
-                authorization: 'Bearer ' + access,
+                Authorization: 'Bearer ' + access,
                 'Content-Type': 'application/json'
             }}).then(res => checkResponse(res))
     },
-    patchUserInfo(user: TUserInfo, access: string) {
+    patchUserInfo(user: TUserInfo, access: string) : Promise<any> {
         const {email, name, password} = user
         return fetch(`${PATH}/auth/user`, {
             method: 'PATCH',
             headers: {
-                authorization: 'Bearer ' + access,
+                Authorization: 'Bearer ' + access,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -77,7 +82,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getRegisterRequest(user: TUserInfo) {
+    getRegisterRequest(user: TUserInfo) : Promise<any> {
         const { email, password, name } = user;
         return fetch(`${PATH}/auth/register`, {
             method: 'POST',
@@ -89,7 +94,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getPasswordResetRequest(email: string){
+    getPasswordResetRequest(email: string) : Promise<any> {
         return fetch(`${PATH}/password-reset`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -98,7 +103,7 @@ const API = {
             })
         }).then(res => checkResponse(res))
     },
-    getPasswordRecoverRequest(password: string, token: string){
+    getPasswordRecoverRequest(password: string, token: string) : Promise<any> {
         return fetch(`${PATH}/password-reset/reset`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -129,4 +134,40 @@ export const checkUserAuth = ():boolean => {
     }
     return Boolean(login)
 }
+
+export const filterIngredients = (arr: string[], data: IIngredient[]) => arr.map(item => {
+    return data.filter(i => i._id === item);
+}).reduce((acc, item) => {
+    return acc.concat(item)
+})
+
+export const calculatePrice = (arr: string[], data: IIngredient[]) => {
+    return filterIngredients(arr, data).reduce((acc, item) => acc + item.price, 0)
+}
+
+export const includesIngredients = (data: IIngredient[], arr: string[]) => {
+    return data.filter((item) => arr.includes(item._id));
+}
+
+export type TOptions = {
+    month: 'long',
+    day: 'numeric',
+    timezone: 'Moscow',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZoneName: "short",
+}
+export const getOrderDate = (date: string) => {
+    const options: TOptions = {
+        month: 'long',
+        day: 'numeric',
+        timezone: 'Moscow',
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZoneName: "short",
+    };
+
+    return new Date(Date.parse(date)).toLocaleString("ru", options)
+}
+
 export default API

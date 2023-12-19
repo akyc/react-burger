@@ -1,6 +1,4 @@
-import React, {
-    ReactNode
-} from 'react'
+import React from 'react'
 import { useLocation, Navigate } from 'react-router-dom'
 import {pageRoutes} from "../../utils/constants"
 import {

@@ -8,18 +8,13 @@ import {
     useNavigate
 } from 'react-router-dom';
 import { getLoginUser } from '../../services/actions/login';
-import { useDispatch, useSelector } from 'react-redux';
 import styles from './login.module.css'
 import {
-    checkUserAuth
-} from "../../utils/api";
-import {
-    pageRoutes
+    pageRoutes, useDispatch, useSelector
 } from "../../utils/constants";
 
 
 const Login = () => {
-    //@ts-ignore
     const login = useSelector( state => state.login.login)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -30,7 +25,7 @@ const Login = () => {
             email,
             password
         }
-        //@ts-ignore
+
         dispatch(getLoginUser(user))
     }
     useEffect(() => {

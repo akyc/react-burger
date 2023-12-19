@@ -1,3 +1,8 @@
+import { store } from '../services/store'
+import { ActionCreator } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { TUnionAction} from "../services/actions";
+
 export interface IIngredientId {
     _id: string;
 }
@@ -23,11 +28,24 @@ export type TUserInfo = {
     password?: string;
 };
 
+export type TOrder = {
+    _id: string,
+    ingredients: Array<string>,
+    status: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    number: number
+}
+
 export interface IOrder {
     name: string;
-    order: {
-        number: number;
-    };
+    order: TOrder;
     success: boolean;
 }
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export type AppThunk<ReturnType = void> = ActionCreator<
+    ThunkAction<ReturnType, RootState, never, TUnionAction>
+>;

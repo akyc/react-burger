@@ -4,13 +4,12 @@ import React, {
     useCallback
 } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../../utils/constants'
 import { patchUserInfoThunk, getUserInfoThunk } from '../../services/actions/user'
 import { logoutUserThunk } from '../../services/actions/login'
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './profile.module.css'
 import {
-    deleteCookie,
     getCookie
 } from "../../utils/cookies";
 import {
@@ -19,12 +18,13 @@ import {
 import {
     pageRoutes
 } from "../../utils/constants";
+import {
+    ProfileNav
+} from "../../components/ProfileNav/ProfileNav";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    //@ts-ignore
     const currentName = useSelector(state => state.info.user.name);
-    //@ts-ignore
     const currentEmail = useSelector(state => state.info.user.email);
     const isUser = checkUserAuth();
 
@@ -47,7 +47,6 @@ const Profile = () => {
     const saveInfo = (e:React.SyntheticEvent) => {
         e.preventDefault();
         const access = getCookie('access')
-        //@ts-ignore
         dispatch(patchUserInfoThunk(value, access));
         setValue({
             name: currentName,
@@ -64,10 +63,6 @@ const Profile = () => {
         })
     }
 
-    const logoutUser = useCallback(() => {
-        //@ts-ignore
-        dispatch(logoutUserThunk());
-    }, [dispatch])
 
     const options = {
         name: 'name',
@@ -78,32 +73,13 @@ const Profile = () => {
 
     useEffect(() => {
         if (isUser) {
-            //@ts-ignore
             dispatch(getUserInfoThunk());
         }
     }, [dispatch, isUser])
 
     return (
         <main className={styles.main}>
-            <nav className={`${styles.nav} mr-15`}>
-                <NavLink
-                    to={pageRoutes.profile}
-                    className={({isActive}) => `${isActive ? styles.active : ''} ${styles.tab}`}>
-                    <h3 className='text text_type_main-medium mt-4 mb-8'>Профиль</h3>
-                </NavLink>
-                <NavLink
-                    to={pageRoutes.orders}
-                    className={({isActive}) => `${isActive ? styles.active : ''} ${styles.tab}`}>
-                    <h3 className='text text_type_main-medium mb-8'>История заказов</h3>
-                </NavLink>
-                <NavLink
-                    to={pageRoutes.main}
-                    className={({isActive}) => `${isActive ? styles.active : ''} ${styles.tab}`}>
-                    <h3 onClick={logoutUser} className='text text_type_main-medium mb-4'>Выход</h3>
-                </NavLink>
-                <p className={`${styles.text} text text_type_main-small mt-20`}>В этом разделе вы можете
-                    изменять свои персональные данные</p>
-            </nav>
+            <ProfileNav />
             <section className={styles.section}>
                 <form className={styles.section} onSubmit={saveInfo}>
                     <div className='mt-6'>

@@ -1,5 +1,5 @@
 import React, { useEffect, FC } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../../utils/constants'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { getIngredients } from '../../services/actions/ingredients'
@@ -34,28 +34,31 @@ import IngredientDetails
     from "../IngredientDetails/IngredientDetails";
 
 import {Location} from "react-router-dom";
-
-// @ts-ignore
-const getIngredientsItems = store => store.ingredients
+import {Feed}
+    from "../../pages/feed/feed";
+import {
+    FeedDetails
+} from "../../pages/feed-details/feed-details";
+import {
+    ProfileOrder
+} from "../ProfileOrder/ProfileOrder";
 
 const App: FC = () => {
     const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
 
-    // @ts-ignore
-    const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(getIngredientsItems)
+    const {ingredientsRequest, ingredientsError, ingredientsRequestError} = useSelector(store => store.ingredients)
 
     const locationState = location.state as {background: Location}
     const background = locationState && locationState.background
 
     useEffect(() => {
-        // @ts-ignore
         dispatch(getIngredients())
     }, [])
 
     const modalCloseHandler = () => {
-        navigate(pageRoutes.main, { replace: true })
+        navigate(-1)
     }
 
   return (
@@ -107,6 +110,14 @@ const App: FC = () => {
                           <Profile/>
                       </ProtectedRoute>
                   } />
+                  <Route path={`${pageRoutes.profile}${pageRoutes.orders}`} element={
+                      <ProtectedRoute onlyUnAuth={false}>
+                          <ProfileOrder/>
+                      </ProtectedRoute>
+                  } />
+                  <Route path={pageRoutes.feed} element={<Feed/>}/>
+                  <Route path={pageRoutes.feedId} element={<FeedDetails />} />
+                  <Route path={pageRoutes.orderId} element={<FeedDetails />} />
                   <Route path={pageRoutes.notFound} element={<NotFound />} />
                 </Routes>
                 {background && (
@@ -114,6 +125,11 @@ const App: FC = () => {
                       <Route path={pageRoutes.ingredientsId} element={
                           <Modal header='Детали ингредиента' onClose={modalCloseHandler}>
                               <IngredientDetails />
+                          </Modal>
+                      } />
+                      <Route path={pageRoutes.feedId} element={
+                          <Modal onClose={modalCloseHandler}>
+                              <FeedDetails />
                           </Modal>
                       } />
                   </Routes>

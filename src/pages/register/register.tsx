@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import { Link, Navigate } from 'react-router-dom'
 import { getRegisterUser } from '../../services/actions/register'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../../utils/constants'
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './register.module.css'
 const Register = () => {
-    //@ts-ignore
     const success = useSelector(state => state.user.success);
     const dispatch = useDispatch()
     const handleRegister = (e: React.SyntheticEvent) => {
@@ -15,7 +14,6 @@ const Register = () => {
             email: value.email,
             password: value.password
         };
-        //@ts-ignore
         dispatch(getRegisterUser(user));
     }
 
