@@ -10,7 +10,7 @@ import { getUserInfoReducer } from './user'
 import { resetPasswordReducer } from './forgot-password'
 import { recoverPasswordReducer } from './reset-password'
 import {
-    socketReduser
+    socketReducer
 } from "./socket";
 import {
     userSocketReducer
@@ -27,6 +27,6 @@ export const rootReducer = combineReducers({
     info: getUserInfoReducer,
     resetPassword: resetPasswordReducer,
     recoverPassword: recoverPasswordReducer,
-    socket: socketReduser,
+    socket: socketReducer,
     userOrders: userSocketReducer
 })

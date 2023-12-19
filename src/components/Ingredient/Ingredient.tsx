@@ -7,22 +7,19 @@ import {
     Counter,
     CurrencyIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-    useSelector
-} from "react-redux";
+
 import {
     Link,
     useLocation
 } from "react-router-dom";
 import {IIngredient} from "../../utils/types";
-import {pageRoutes} from "../../utils/constants";
+import {pageRoutes, useSelector} from "../../utils/constants";
 
 interface IIngredientOne {
     item: IIngredient;
 }
 const Ingredient: FC<IIngredientOne>= ({item}) => {
     const { _id, name, price, image_mobile, image_large, image } = item
-    //@ts-ignore
     const {ingredients, bun} = useSelector(store => store.constructorBurger)
     const amount = [...ingredients, bun, bun].filter( el => el?._id === _id).length
     const [, drag] = useDrag(() => ({

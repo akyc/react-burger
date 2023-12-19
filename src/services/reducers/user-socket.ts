@@ -57,7 +57,6 @@ export const userSocketReducer = (state = initialState, action: TUnionAction): T
         case USER_WS_SEND_MESSAGE: {
             return {
                 ...state,
-
             };
         }
         case USER_WS_USER_NAME_UPDATE: {

@@ -23,7 +23,7 @@ const initialState: TInitialState = {
     totalToday: null
 }
 
-export const socketReduser = (state : TInitialState = initialState, action: TUnionAction): TInitialState => {
+export const socketReducer = (state : TInitialState = initialState, action: TUnionAction): TInitialState => {
     switch (action.type) {
         case WS_CONNECTION_SUCCESS: {
             return {

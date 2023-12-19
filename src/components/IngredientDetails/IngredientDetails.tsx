@@ -1,5 +1,5 @@
 import React from 'react'
-import {useSelector} from "react-redux"
+import {useSelector} from "../../utils/constants"
 import styles from './IngredientDetails.module.css'
 import { useParams } from "react-router-dom";
 import {
@@ -8,10 +8,9 @@ import {
 
 const IngredientDetails = () => {
     let { id } = useParams();
-    //@ts-ignore
     const ingredients = useSelector(store => store.ingredients.ingredientsItems)
     if(ingredients.length){
-        const ingredient:IIngredient = ingredients.find((el:IIngredient) => el._id === id)
+        const ingredient = ingredients.find((el:IIngredient) => el._id === id)
         if(ingredient){
             const { name, image_mobile, image_large, proteins, fat, calories, carbohydrates } = ingredient
             const nutrients = [

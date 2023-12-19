@@ -47,10 +47,10 @@ export const resetOrderDetails = (): IResetOrderDetails => ({
     type: RESET_ORDER_DETAILS,
 })
 
-export const getOrderId : AppThunk = (ingredients : Array<string>) => {
+export const getOrderId : AppThunk = (ingredients : Array<string>, access: string) => {
     return (dispatch) =>  {
         dispatch(getOrderDetailsRequest())
-        Api.storeOrder(ingredients).then(res => {
+        Api.storeOrder(ingredients, access).then(res => {
             if(res && res.success && res.order){
                 dispatch(getOrderDetailsSuccess(res.order.number));
             }

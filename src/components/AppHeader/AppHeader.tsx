@@ -10,6 +10,7 @@ import {
 import styles
     from './AppHeader.module.css'
 import {
+    Link,
     NavLink
 } from 'react-router-dom'
 import {
@@ -39,7 +40,9 @@ const AppHeader: FC = () => {
                     </NavLink>
                 </div>
                 <div className={styles.logotype}>
-                    <Logo />
+                    <Link to={pageRoutes.main}>
+                        <Logo />
+                    </Link>
                 </div>
                 <div className={styles.profile}>
                     <NavLink to={isUser ? { pathname: pageRoutes.profile } : { pathname: pageRoutes.login }}

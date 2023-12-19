@@ -3,10 +3,10 @@ import {
     TUserInfo
 } from "./types";
 
-const PATH: string = "https://norma.nomoreparties.space/api"
+const PATH = "https://norma.nomoreparties.space/api"
 
-export const wsOrdersUrl: string = `wss://norma.nomoreparties.space/orders`;
-export const wsAllOrdersUrl: string = 'wss://norma.nomoreparties.space/orders/all';
+export const wsOrdersUrl = `wss://norma.nomoreparties.space/orders`;
+export const wsAllOrdersUrl = 'wss://norma.nomoreparties.space/orders/all';
 
 
 type TServerResponse<T> = {
@@ -29,10 +29,11 @@ const API = {
     getIngredientsRequest(): Promise<TIngredientsResponse> {
         return fetch(`${PATH}/ingredients`).then(res => checkResponse<TIngredientsResponse>(res))
     },
-    storeOrder(ingredients: Array<string>) : Promise<any>{
+    storeOrder(ingredients: Array<string>, access: string) : Promise<any>{
         return fetch(`${PATH}/orders`, {
             method: 'POST',
             headers: {
+                Authorization: 'Bearer ' + access,
                 "Content-Type": "application/json;charset=utf-8",
             },
             body: JSON.stringify({ingredients})
@@ -62,7 +63,7 @@ const API = {
     getUserInfo(access: string | undefined) : Promise<any> {
         return fetch(`${PATH}/auth/user`, {
             headers: {
-                authorization: 'Bearer ' + access,
+                Authorization: 'Bearer ' + access,
                 'Content-Type': 'application/json'
             }}).then(res => checkResponse(res))
     },
@@ -71,7 +72,7 @@ const API = {
         return fetch(`${PATH}/auth/user`, {
             method: 'PATCH',
             headers: {
-                authorization: 'Bearer ' + access,
+                Authorization: 'Bearer ' + access,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({

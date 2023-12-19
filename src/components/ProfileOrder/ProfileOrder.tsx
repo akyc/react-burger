@@ -12,9 +12,6 @@ import {
 import {
     Order
 } from "../Order/order";
-import {
-    nanoid
-} from "nanoid";
 import styles from './ProfileOrder.module.css'
 import {
     getCookie
@@ -40,13 +37,13 @@ export const ProfileOrder = () => {
             dispatch(userWsConnectionClosed())
     }, [location, dispatch])
 
-     const { orders: data } = useSelector(state => state.userOrders);
+    const { orders: data } = useSelector(state => state.userOrders);
     return (
         data && <main className={styles.main}>
             <ProfileNav />
             <section className={styles.section}>
                 <div className={`${styles.scroll} mt-10`}>
-                    {data.map((element) => <Order element={element} key={nanoid()} />)}
+                    {data.map((element, index) => <Order element={element} key={index} />)}
                 </div>
             </section>
         </main>

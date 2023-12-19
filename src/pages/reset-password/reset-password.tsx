@@ -6,17 +6,13 @@ import { Link, Navigate } from 'react-router-dom';
 import { getPasswordRecoverThunk } from '../../services/actions/reset-password'
 import {
     useDispatch,
-    useSelector
-} from 'react-redux'
+    useSelector,
+    pageRoutes
+} from '../../utils/constants'
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './reset-password.module.css'
-import {
-    pageRoutes
-} from "../../utils/constants";
 const ResetPassword = () => {
-    //@ts-ignore
     const reset = useSelector(state => state.resetPassword.success)
-    //@ts-ignore
     const recovered = useSelector(state => state.recoverPassword.success)
     const dispatch = useDispatch()
     const [password, setPassword] = useState('')
@@ -24,7 +20,6 @@ const ResetPassword = () => {
 
     const handleClick = useCallback((e: React.SyntheticEvent) => {
         e.preventDefault();
-        //@ts-ignore
         dispatch(getPasswordRecoverThunk(password, token));
     }, [dispatch, password, token])
 

@@ -11,7 +11,7 @@ export const socketMiddleware = (url: string, actions: TMiddlewareActions): Midd
                 const { wsInit, wsSendMessage, onOpen, onClose, onError, onOrders } = actions;
                 const { isLoggedIn } = getState().login;
                 if (type === wsInit) {
-                    socket = new WebSocket(`${url}${type === wsInit && payload ? `?token=${payload}` : '' }`);
+                    socket = new WebSocket(`${url}${ payload ? `?token=${payload}` : '' }`);
                 }
                 if (socket && type === onClose) {
                     socket.close(1000);

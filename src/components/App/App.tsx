@@ -54,7 +54,6 @@ const App: FC = () => {
     const background = locationState && locationState.background
 
     useEffect(() => {
-        // @ts-ignore
         dispatch(getIngredients())
     }, [])
 

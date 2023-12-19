@@ -11,7 +11,7 @@ export const PATCH_USER_INFO : 'PATCH_USER_INFO' = 'PATCH_USER_INFO';
 
 export type TUserInfoResponse = {
     success: boolean,
-    user: TUserInfo | {}
+    user: TUserInfo
 }
 export interface IGetUserInfo {
     readonly type: typeof GET_USER_INFO,

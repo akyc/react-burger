@@ -54,7 +54,7 @@ export const resetIngredient = (): IResetIngredient => ({
     type: RESET_INGREDIENT
 });
 
-export const moveConstructorItem = (dragIndex: number, hoverIndex: number): IMoveIngredient => ({
+export const moveIngredient = (dragIndex: number, hoverIndex: number): IMoveIngredient => ({
     type: MOVE_INGREDIENT,
     payload: {
         dragIndex,

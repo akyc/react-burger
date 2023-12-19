@@ -4,27 +4,23 @@ import React, {
     useEffect
 } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { pageRoutes, useDispatch, useSelector } from '../../utils/constants'
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { getPasswordSuccessThunk } from '../../services/actions/forgot-password'
 
 import styles from './forgot-password.module.css'
-import {
-    pageRoutes
-} from "../../utils/constants";
+
 
 const ForgotPassword = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    //@ts-ignore
     const success = useSelector(state => state.resetPassword.success)
 
     const [email, setEmail] = useState('')
 
     const handleClick = useCallback((e: React.SyntheticEvent) => {
         e.preventDefault();
-        //@ts-ignore
         dispatch(getPasswordSuccessThunk(email));
     }, [dispatch, email])
 

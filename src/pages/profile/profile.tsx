@@ -24,9 +24,7 @@ import {
 
 const Profile = () => {
     const dispatch = useDispatch();
-    //@ts-ignore
     const currentName = useSelector(state => state.info.user.name);
-    //@ts-ignore
     const currentEmail = useSelector(state => state.info.user.email);
     const isUser = checkUserAuth();
 
@@ -49,7 +47,6 @@ const Profile = () => {
     const saveInfo = (e:React.SyntheticEvent) => {
         e.preventDefault();
         const access = getCookie('access')
-        //@ts-ignore
         dispatch(patchUserInfoThunk(value, access));
         setValue({
             name: currentName,
@@ -76,7 +73,6 @@ const Profile = () => {
 
     useEffect(() => {
         if (isUser) {
-            //@ts-ignore
             dispatch(getUserInfoThunk());
         }
     }, [dispatch, isUser])

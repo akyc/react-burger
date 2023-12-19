@@ -10,7 +10,10 @@ type TInitialState = TUserInfoResponse
 
 const initialState : TInitialState = {
     success: false,
-    user: {},
+    user: {
+        name: '',
+        email: ''
+    }
 };
 
 export const registerUserReducer = (state : TInitialState = initialState, action : TUnionAction) : TInitialState => {

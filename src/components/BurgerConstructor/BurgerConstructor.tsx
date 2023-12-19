@@ -3,17 +3,16 @@ import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-de
 import Modal from '../Modal/Modal'
 import styles from './BurgerConstructor.module.css'
 import OrderInfo from '../OrderDetails/OrderDetails'
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "../../utils/constants"
 import { nanoid } from "@reduxjs/toolkit"
 import {
-    getOrderId,
-    RESET_ORDER_DETAILS
+    getOrderId
 } from "../../services/actions/orderDetails"
 import {
-    ADD_BUN,
-    ADD_INGREDIENT,
-    DELETE_INGREDIENT,
-    RESET_INGREDIENT
+    addBun,
+    addIngredient,
+    deleteIngredient,
+    resetIngredient
 } from "../../services/actions/constructor"
 import { useDrop } from "react-dnd"
 import IngredientDraggable from "../IngredientDraggable/IngredientDraggable"
@@ -27,66 +26,62 @@ import {
     pageRoutes
 } from "../../utils/constants";
 import {
-    IIngredient,
-    IIngredientId
+    IIngredient
 } from "../../utils/types";
+import {
+    getCookie
+} from "../../utils/cookies";
 
 const BurgerConstructor:FC = () => {
     const isUser = checkUserAuth()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // @ts-ignore
     const {bun, ingredients} = useSelector(store => store.constructorBurger)
-    // @ts-ignore
     const {orderId} = useSelector(store => store.orderDetails)
     const [isShowModal, setShowModal] = useState(false)
-    const burger: IIngredient[] = useMemo(
+    const burger = useMemo(
         () => [...ingredients, bun, bun],
         [ingredients, bun]
     )
     const burgerTotalPrice = useMemo(
-        () => ingredients.length && bun ? burger.reduce((a,c) => a + c.price, 0) : 0,
+        () => ingredients.length && bun ? burger.reduce((a,c) => a + (c ? c.price : 0) , 0) : 0,
         [ingredients, bun, burger]
     )
-    const addIngredient = (ingredient: IIngredient ) => {
+    const addIngredientHandler = (ingredient: IIngredient ) => {
         ingredient = {
             ...ingredient,
             uid: nanoid(),
         }
         if(ingredient.type === 'bun'){
-            //@ts-ignore
-            dispatch({type: ADD_BUN, payload: ingredient})
+            dispatch(addBun(ingredient))
         } else {
-            //@ts-ignore
-            dispatch({type: ADD_INGREDIENT, payload: ingredient})
+            dispatch(addIngredient(ingredient))
         }
     }
     const [, drop] = useDrop(() => ({
         accept: 'item',
-        drop: (item: IIngredient) => addIngredient(item)
+        drop: (item: IIngredient) => addIngredientHandler(item)
     }));
     const modalOpenHandler = () => {
         if (!isUser) {
             navigate(pageRoutes.login);
         }
         if(orderId){
-            //@ts-ignore
-            dispatch({type: RESET_ORDER_DETAILS})
+            dispatch(resetIngredient())
         }
-        const idsList = burger.map(el => el._id)
-        //@ts-ignore
-        dispatch(getOrderId(idsList))
+        const idsList = burger.map(el => el?._id)
+        const access = getCookie('access')
+        dispatch(getOrderId(idsList, access))
         setShowModal(true )
     }
     const modalCloseHandler = () => {
         if(orderId){
-            dispatch({type: RESET_INGREDIENT})
+            dispatch(resetIngredient())
         }
         setShowModal(false )
     }
-    const deleteIngredient = (item: IIngredient) => {
-        //@ts-ignore
-        dispatch({type: DELETE_INGREDIENT, item})
+    const deleteIngredientHandler = (item: IIngredient) => {
+        dispatch(deleteIngredient(item))
     };
 
     return (
@@ -103,7 +98,7 @@ const BurgerConstructor:FC = () => {
                 }
             </div>
             <div className={`${styles.fillings} d-flex`}>
-                {ingredients && ingredients.map((item: IIngredient ,i: number) => <IngredientDraggable key={item.uid} index={i} item={item} id={item.uid} deleteIngredient={deleteIngredient}/>)}
+                {ingredients && ingredients.map((item,i) => <IngredientDraggable key={item.uid} index={i} item={item} id={item.uid} deleteIngredient={deleteIngredientHandler}/>)}
             </div>
             <div className={`${styles.blockedElement} d-flex pt-3 pl-8`}>
                 {bun &&
